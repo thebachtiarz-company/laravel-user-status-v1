@@ -1,6 +1,6 @@
 <?php
 
-// 
+//
 
 use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 
@@ -10,7 +10,7 @@ use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
  * @param string|null $keyName config key name | null will return all
  * @return mixed
  */
-function tbauthconfig(?string $keyName = null): mixed
+function tbuserstatusconfig(?string $keyName = null): mixed
 {
     $configName = UserStatusConfigInterface::USER_STATUS_CONFIG_NAME;
 
