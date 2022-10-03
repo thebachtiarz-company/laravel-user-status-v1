@@ -10,12 +10,12 @@
 ## Installation
 - composer config (only if you have access)
 ```bash
-composer config repositories.thebachtiarz/laravel-user-status-v1 git git@github.com:thebachtiarz/laravel-user-status-v1.git
+composer config repositories.thebachtiarz-company/laravel-user-status-v1 git git@github.com:thebachtiarz-company/laravel-user-status-v1.git
 ```
 
 - install repository
 ```bash
-composer require thebachtiarz/laravel-user-status-v1
+composer require thebachtiarz-company/laravel-user-status-v1
 ```
 
 - vendor publish
