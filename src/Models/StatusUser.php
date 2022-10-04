@@ -6,15 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserModelInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
+use TheBachtiarz\UserStatus\Traits\Models\StatusUserScopeTrait;
 
 class StatusUser extends Model implements StatusUserModelInterface
 {
     use SoftDeletes;
 
+    use StatusUserScopeTrait;
+
     /**
      * {@inheritDoc}
      */
-    protected $fillable = ['name', 'code', 'abilities'];
+    protected $fillable = StatusUserModelInterface::STATUS_USER_ATTRIBUTES;
 
     // ? Getter Modules
     /**
@@ -22,7 +26,15 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getId(): ?int
     {
-        return $this->__get('id');
+        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ID);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName(): ?string
+    {
+        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_NAME);
     }
 
     /**
@@ -30,7 +42,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getCode(): ?string
     {
-        return $this->__get('code');
+        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE);
     }
 
     /**
@@ -38,7 +50,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getAbilities(): ?string
     {
-        return $this->__get('abilities');
+        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ABILITIES);
     }
 
     // ? Setter Modules
@@ -47,7 +59,15 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setId(int $id): void
     {
-        $this->__set('id', $id);
+        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ID, $id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setName(string $name): void
+    {
+        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_NAME, $name);
     }
 
     /**
@@ -55,7 +75,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setCode(string $code): void
     {
-        $this->__set('code', $code);
+        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE, $code);
     }
 
     /**
@@ -63,7 +83,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setAbilities(string $abilities): void
     {
-        $this->__set('abilities', $abilities);
+        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ABILITIES, $abilities);
     }
 
     // ? Relations
@@ -74,6 +94,6 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function userstatuses(): HasMany
     {
-        return $this->hasMany(UserStatus::class, 'status_user_id');
+        return $this->hasMany(UserStatus::class, UserStatusModelInterface::USER_STATUS_ATTRIBUTE_STATUSUSERID);
     }
 }

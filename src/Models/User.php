@@ -24,7 +24,7 @@ class User extends TheBachtiarzAuthUserModel implements UserModelInterface
      */
     public function getId(): ?int
     {
-        return $this->__get('id');
+        return $this->__get(UserModelInterface::USER_ATTRIBUTE_ID);
     }
 
     // ? Setter Modules
@@ -33,6 +33,6 @@ class User extends TheBachtiarzAuthUserModel implements UserModelInterface
      */
     public function setId(int $id): void
     {
-        $this->__set('id', $id);
+        $this->__set(UserModelInterface::USER_ATTRIBUTE_ID, $id);
     }
 }
