@@ -2,7 +2,6 @@
 
 namespace TheBachtiarz\UserStatus;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Providers\AppsProvider;
@@ -11,33 +10,17 @@ class ServiceProvider extends LaravelServiceProvider
 {
     //
 
-    /**
-     * Applications Provider
-     *
-     * @var AppsProvider
-     */
-    protected AppsProvider $appsProvider;
-
-    /**
-     * Constructor
-     *
-     * @param Application $application
-     * @param AppsProvider $appsProvider
-     */
-    public function __construct(
-        Application $application,
-        AppsProvider $appsProvider
-    ) {
-        parent::__construct($application);
-        $this->appsProvider = $appsProvider;
-    }
-
     public function register(): void
     {
-        $this->appsProvider->registerConfig();
+        /**
+         * @var AppsProvider $appsProvider
+         */
+        $appsProvider = new AppsProvider;
+
+        $appsProvider->registerConfig();
 
         if ($this->app->runningInConsole()) {
-            $this->commands($this->appsProvider->registerCommands());
+            $this->commands($appsProvider->registerCommands());
         }
     }
 
