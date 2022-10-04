@@ -4,6 +4,22 @@ namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
 interface StatusUserModelInterface
 {
+    /**
+     * Model attributes
+     *
+     * @var array
+     */
+    public const STATUS_USER_ATTRIBUTES = [
+        self::STATUS_USER_ATTRIBUTE_NAME,
+        self::STATUS_USER_ATTRIBUTE_CODE,
+        self::STATUS_USER_ATTRIBUTE_ABILITIES
+    ];
+
+    public const STATUS_USER_ATTRIBUTE_ID = 'id';
+    public const STATUS_USER_ATTRIBUTE_NAME = 'name';
+    public const STATUS_USER_ATTRIBUTE_CODE = 'code';
+    public const STATUS_USER_ATTRIBUTE_ABILITIES = 'abilities';
+
     // ? Getter Modules
     /**
      * Get id
@@ -11,6 +27,13 @@ interface StatusUserModelInterface
      * @return integer|null
      */
     public function getId(): ?int;
+
+    /**
+     * Get name
+     *
+     * @return string|null
+     */
+    public function getName(): ?string;
 
     /**
      * Get code
@@ -34,6 +57,14 @@ interface StatusUserModelInterface
      * @return void
      */
     public function setId(int $id): void;
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return void
+     */
+    public function setName(string $name): void;
 
     /**
      * Set code

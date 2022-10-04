@@ -4,6 +4,8 @@ namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
 interface UserModelInterface
 {
+    public const USER_ATTRIBUTE_ID = 'id';
+
     // ? Getter Modules
     /**
      * Get id

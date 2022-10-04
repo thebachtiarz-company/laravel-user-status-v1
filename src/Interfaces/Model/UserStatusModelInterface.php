@@ -4,6 +4,20 @@ namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
 interface UserStatusModelInterface
 {
+    /**
+     * Model attributes
+     *
+     * @var array
+     */
+    public const USER_STATUS_ATTRIBUTES = [
+        self::USER_STATUS_ATTRIBUTE_USERID,
+        self::USER_STATUS_ATTRIBUTE_STATUSUSERID
+    ];
+
+    public const USER_STATUS_ATTRIBUTE_ID = 'id';
+    public const USER_STATUS_ATTRIBUTE_USERID = 'user_id';
+    public const USER_STATUS_ATTRIBUTE_STATUSUSERID = 'status_user_id';
+
     // ? Getter Modules
     /**
      * Get id
