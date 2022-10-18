@@ -19,7 +19,7 @@ interface UserModelInterface
      * Set id
      *
      * @param integer $id
-     * @return void
+     * @return self
      */
-    public function setId(int $id): void;
+    public function setId(int $id): self;
 }
