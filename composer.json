@@ -5,7 +5,7 @@
     "require": {
         "php": "^8.1",
         "laravel/framework": "^9.30",
-        "thebachtiarz/laravel-auth-v1": "^2.0",
+        "thebachtiarz-company/laravel-auth-v1": "dev-master",
         "thebachtiarz/laravel-toolkit-v1": "^2.0"
     },
     "license": "MIT",

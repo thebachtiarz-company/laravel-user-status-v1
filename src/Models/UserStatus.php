@@ -46,25 +46,31 @@ class UserStatus extends Model implements UserStatusModelInterface
     /**
      * {@inheritDoc}
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->__set(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_ID, $id);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setUserId(int $userId): void
+    public function setUserId(int $userId): self
     {
         $this->__set(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_USERID, $userId);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setStatusUserId(int $statusUserId): void
+    public function setStatusUserId(int $statusUserId): self
     {
         $this->__set(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_STATUSUSERID, $statusUserId);
+
+        return $this;
     }
 
     // ? Relations

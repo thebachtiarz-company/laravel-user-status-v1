@@ -31,8 +31,10 @@ class User extends TheBachtiarzAuthUserModel implements UserModelInterface
     /**
      * {@inheritDoc}
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->__set(UserModelInterface::USER_ATTRIBUTE_ID, $id);
+
+        return $this;
     }
 }

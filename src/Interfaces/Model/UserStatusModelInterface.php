@@ -45,23 +45,23 @@ interface UserStatusModelInterface
      * Set id
      *
      * @param integer $id
-     * @return void
+     * @return self
      */
-    public function setId(int $id): void;
+    public function setId(int $id): self;
 
     /**
      * Set user id
      *
      * @param integer $userId
-     * @return void
+     * @return self
      */
-    public function setUserId(int $userId): void;
+    public function setUserId(int $userId): self;
 
     /**
      * Set status user id
      *
      * @param integer $statusUserId
-     * @return void
+     * @return self
      */
-    public function setStatusUserId(int $statusUserId): void;
+    public function setStatusUserId(int $statusUserId): self;
 }

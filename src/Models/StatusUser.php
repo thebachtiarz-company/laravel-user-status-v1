@@ -57,33 +57,41 @@ class StatusUser extends Model implements StatusUserModelInterface
     /**
      * {@inheritDoc}
      */
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ID, $id);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_NAME, $name);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setCode(string $code): void
+    public function setCode(string $code): self
     {
         $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE, $code);
+
+        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setAbilities(string $abilities): void
+    public function setAbilities(string $abilities): self
     {
         $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ABILITIES, $abilities);
+
+        return $this;
     }
 
     // ? Relations

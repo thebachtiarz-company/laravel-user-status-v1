@@ -54,31 +54,31 @@ interface StatusUserModelInterface
      * Set id
      *
      * @param integer $id
-     * @return void
+     * @return self
      */
-    public function setId(int $id): void;
+    public function setId(int $id): self;
 
     /**
      * Set name
      *
      * @param string $name
-     * @return void
+     * @return self
      */
-    public function setName(string $name): void;
+    public function setName(string $name): self;
 
     /**
      * Set code
      *
      * @param string $code
-     * @return void
+     * @return self
      */
-    public function setCode(string $code): void;
+    public function setCode(string $code): self;
 
     /**
      * Set abilities
      *
      * @param string $abilities
-     * @return void
+     * @return self
      */
-    public function setAbilities(string $abilities): void;
+    public function setAbilities(string $abilities): self;
 }
