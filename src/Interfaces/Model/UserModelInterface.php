@@ -2,24 +2,9 @@
 
 namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
-interface UserModelInterface
+use TheBachtiarz\Auth\Interfaces\Model\UserModelInterface as TheBachtiarzAuthUserModelInterface;
+
+interface UserModelInterface extends TheBachtiarzAuthUserModelInterface
 {
-    public const USER_ATTRIBUTE_ID = 'id';
-
-    // ? Getter Modules
-    /**
-     * Get id
-     *
-     * @return integer|null
-     */
-    public function getId(): ?int;
-
-    // ? Setter Modules
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return self
-     */
-    public function setId(int $id): self;
+    //
 }
