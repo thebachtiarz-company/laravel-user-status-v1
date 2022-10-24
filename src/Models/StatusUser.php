@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserModelInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
-use TheBachtiarz\UserStatus\Traits\Models\StatusUserScopeTrait;
+use TheBachtiarz\UserStatus\Traits\Model\StatusUserScopeTrait;
 
 class StatusUser extends Model implements StatusUserModelInterface
 {
@@ -18,7 +18,7 @@ class StatusUser extends Model implements StatusUserModelInterface
     /**
      * {@inheritDoc}
      */
-    protected $fillable = StatusUserModelInterface::STATUS_USER_ATTRIBUTES;
+    protected $fillable = StatusUserModelInterface::STATUS_USER_ATTRIBUTES_FILLABLE;
 
     // ? Getter Modules
     /**

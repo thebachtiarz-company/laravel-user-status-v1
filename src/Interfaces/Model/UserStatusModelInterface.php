@@ -9,7 +9,7 @@ interface UserStatusModelInterface
      *
      * @var array
      */
-    public const USER_STATUS_ATTRIBUTES = [
+    public const USER_STATUS_ATTRIBUTES_FILLABLE = [
         self::USER_STATUS_ATTRIBUTE_USERID,
         self::USER_STATUS_ATTRIBUTE_STATUSUSERID
     ];

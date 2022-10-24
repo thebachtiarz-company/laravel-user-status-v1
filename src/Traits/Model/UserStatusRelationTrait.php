@@ -1,13 +1,15 @@
 <?php
 
-namespace TheBachtiarz\UserStatus\Traits\Models;
+namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 
 /**
- * User Status Relation Trait
+ * User Status Relation Trait.
+ * Used in child class where parent is.
+ * @override \TheBachtiarz\Auth\Models\User::class
  */
 trait UserStatusRelationTrait
 {

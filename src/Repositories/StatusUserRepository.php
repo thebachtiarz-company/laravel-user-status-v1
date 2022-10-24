@@ -51,7 +51,7 @@ class StatusUserRepository
     {
         $_data = [];
 
-        foreach (StatusUserModelInterface::STATUS_USER_ATTRIBUTES as $key => $attribute) {
+        foreach (StatusUserModelInterface::STATUS_USER_ATTRIBUTES_FILLABLE as $key => $attribute) {
             $_data[$attribute] = $statusUser->__get($attribute);
         }
 
@@ -69,7 +69,6 @@ class StatusUserRepository
      * @return StatusUSer
      */
     public function save(StatusUser $statusUser): StatusUSer
-
     {
         $_statusUser = $statusUser->save();
 

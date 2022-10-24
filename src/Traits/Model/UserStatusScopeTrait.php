@@ -1,10 +1,8 @@
 <?php
 
-namespace TheBachtiarz\UserStatus\Traits\Models;
+namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Builder;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserModelInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserModelInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 use TheBachtiarz\UserStatus\Models\User;
@@ -25,7 +23,7 @@ trait UserStatusScopeTrait
      */
     public function scopeGetByUser(Builder $builder, User $user): Builder
     {
-        return $builder->where(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_USERID, $user->__get(UserModelInterface::USER_ATTRIBUTE_ID));
+        return $builder->where(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_USERID, $user->getId());
     }
 
     /**
@@ -37,7 +35,7 @@ trait UserStatusScopeTrait
      */
     public function scopeGetByStatusUser(Builder $builder, StatusUser $statusUser): Builder
     {
-        return $builder->where(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_STATUSUSERID, $statusUser->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ID));
+        return $builder->where(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_STATUSUSERID, $statusUser->getId());
     }
 
     /**

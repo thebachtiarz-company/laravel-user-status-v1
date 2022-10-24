@@ -3,9 +3,9 @@
 
 -------
 ## Requires
-- [laravel/framework](https://github.com/laravel/framework/) v9.x
-- [thebachtiarz/laravel-toolkit-v1](https://github.com/thebachtiarz/laravel-toolkit-v1/) v2.x
-- [thebachtiarz/laravel-auth-v1](https://github.com/thebachtiarz/laravel-auth-v1/) v2.x
+- [laravel/framework](https://github.com/laravel/framework/) v^9.30
+- [thebachtiarz/laravel-toolkit-v1](https://github.com/thebachtiarz/laravel-toolkit-v1/) v^2.x
+- [thebachtiarz-company/laravel-auth-v1](https://github.com/thebachtiarz-company/laravel-auth-v1) v^1.x
 
 ## Installation
 - composer config (only if you have access)
@@ -21,6 +21,11 @@ composer require thebachtiarz-company/laravel-user-status-v1
 - vendor publish
 ```bash
 php artisan vendor:publish --provider="TheBachtiarz\UserStatus\ServiceProvider"
+```
+
+- database migration
+``` bash
+php artisan migrate
 ```
 
 -------

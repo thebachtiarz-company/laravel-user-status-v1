@@ -24,7 +24,7 @@ class UserStatusRepository
     {
         $_userStatus = UserStatus::getByUser($user)->first();
 
-        if (!$_userStatus) throw new ModelNotFoundException("Cannot find user status for this user");
+        if (!$_userStatus) throw new ModelNotFoundException("Cannot find user status for current user");
 
         return $_userStatus;
     }
@@ -39,7 +39,7 @@ class UserStatusRepository
     {
         $_collection = UserStatus::getByStatusUser($statusUser);
 
-        if (!$_collection->count()) throw new ModelNotFoundException("Cannot find user status for this status");
+        if (!$_collection->count()) throw new ModelNotFoundException("Cannot find user status for current status");
 
         return $_collection->get();
     }
@@ -54,7 +54,7 @@ class UserStatusRepository
     {
         $_data = [];
 
-        foreach (UserStatusModelInterface::USER_STATUS_ATTRIBUTES as $key => $attribute) {
+        foreach (UserStatusModelInterface::USER_STATUS_ATTRIBUTES_FILLABLE as $key => $attribute) {
             $_data[$attribute] = $userStatus->__get($attribute);
         }
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserModelInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
-use TheBachtiarz\UserStatus\Traits\Models\UserStatusScopeTrait;
+use TheBachtiarz\UserStatus\Traits\Model\UserStatusScopeTrait;
 
 class UserStatus extends Model implements UserStatusModelInterface
 {
@@ -15,7 +15,7 @@ class UserStatus extends Model implements UserStatusModelInterface
     /**
      * {@inheritDoc}
      */
-    protected $fillable = UserStatusModelInterface::USER_STATUS_ATTRIBUTES;
+    protected $fillable = UserStatusModelInterface::USER_STATUS_ATTRIBUTES_FILLABLE;
 
     // ? Getter Modules
     /**
