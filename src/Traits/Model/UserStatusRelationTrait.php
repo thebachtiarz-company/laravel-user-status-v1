@@ -9,7 +9,7 @@ use TheBachtiarz\UserStatus\Models\UserStatus;
 /**
  * User Status Relation Trait.
  * Used in child class where parent is.
- * @override \TheBachtiarz\Auth\Models\User::class
+ * @see \TheBachtiarz\Auth\Models\User
  */
 trait UserStatusRelationTrait
 {
