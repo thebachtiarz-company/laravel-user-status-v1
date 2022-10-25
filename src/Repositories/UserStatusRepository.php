@@ -54,7 +54,7 @@ class UserStatusRepository
     {
         $_data = [];
 
-        foreach (UserStatusModelInterface::USER_STATUS_ATTRIBUTES_FILLABLE as $key => $attribute) {
+        foreach ($userStatus->getFillable() as $key => $attribute) {
             $_data[$attribute] = $userStatus->__get($attribute);
         }
 

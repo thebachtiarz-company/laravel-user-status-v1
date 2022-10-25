@@ -3,7 +3,6 @@
 namespace TheBachtiarz\UserStatus\Repositories;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserModelInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 
 class StatusUserRepository
@@ -51,7 +50,7 @@ class StatusUserRepository
     {
         $_data = [];
 
-        foreach (StatusUserModelInterface::STATUS_USER_ATTRIBUTES_FILLABLE as $key => $attribute) {
+        foreach ($statusUser->getFillable() as $key => $attribute) {
             $_data[$attribute] = $statusUser->__get($attribute);
         }
 

@@ -18,7 +18,7 @@ class StatusUser extends Model implements StatusUserModelInterface
     /**
      * {@inheritDoc}
      */
-    protected $fillable = StatusUserModelInterface::STATUS_USER_ATTRIBUTES_FILLABLE;
+    protected $fillable = self::STATUS_USER_ATTRIBUTES_FILLABLE;
 
     // ? Getter Modules
     /**
@@ -26,7 +26,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getId(): ?int
     {
-        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ID);
+        return $this->__get(self::STATUS_USER_ATTRIBUTE_ID);
     }
 
     /**
@@ -34,7 +34,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getName(): ?string
     {
-        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_NAME);
+        return $this->__get(self::STATUS_USER_ATTRIBUTE_NAME);
     }
 
     /**
@@ -42,7 +42,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getCode(): ?string
     {
-        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE);
+        return $this->__get(self::STATUS_USER_ATTRIBUTE_CODE);
     }
 
     /**
@@ -50,7 +50,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function getAbilities(): ?string
     {
-        return $this->__get(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ABILITIES);
+        return $this->__get(self::STATUS_USER_ATTRIBUTE_ABILITIES);
     }
 
     // ? Setter Modules
@@ -59,7 +59,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setId(int $id): self
     {
-        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ID, $id);
+        $this->__set(self::STATUS_USER_ATTRIBUTE_ID, $id);
 
         return $this;
     }
@@ -69,7 +69,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setName(string $name): self
     {
-        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_NAME, $name);
+        $this->__set(self::STATUS_USER_ATTRIBUTE_NAME, $name);
 
         return $this;
     }
@@ -79,7 +79,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setCode(string $code): self
     {
-        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE, $code);
+        $this->__set(self::STATUS_USER_ATTRIBUTE_CODE, $code);
 
         return $this;
     }
@@ -89,7 +89,7 @@ class StatusUser extends Model implements StatusUserModelInterface
      */
     public function setAbilities(string $abilities): self
     {
-        $this->__set(StatusUserModelInterface::STATUS_USER_ATTRIBUTE_ABILITIES, $abilities);
+        $this->__set(self::STATUS_USER_ATTRIBUTE_ABILITIES, $abilities);
 
         return $this;
     }

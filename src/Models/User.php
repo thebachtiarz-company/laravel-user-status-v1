@@ -9,12 +9,4 @@ use TheBachtiarz\UserStatus\Traits\Model\UserStatusRelationTrait;
 class User extends TheBachtiarzAuthUserModel implements UserModelInterface
 {
     use UserStatusRelationTrait;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
 }
