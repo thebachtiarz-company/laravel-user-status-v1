@@ -2,23 +2,23 @@
 
 namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
-interface StatusUserModelInterface
+interface StatusUserInterface
 {
     /**
      * Model attributes
      *
      * @var array
      */
-    public const STATUS_USER_ATTRIBUTES_FILLABLE = [
-        self::STATUS_USER_ATTRIBUTE_NAME,
-        self::STATUS_USER_ATTRIBUTE_CODE,
-        self::STATUS_USER_ATTRIBUTE_ABILITIES
+    public const ATTRIBUTES_FILLABLE = [
+        self::ATTRIBUTE_NAME,
+        self::ATTRIBUTE_CODE,
+        self::ATTRIBUTE_ABILITIES
     ];
 
-    public const STATUS_USER_ATTRIBUTE_ID = 'id';
-    public const STATUS_USER_ATTRIBUTE_NAME = 'name';
-    public const STATUS_USER_ATTRIBUTE_CODE = 'code';
-    public const STATUS_USER_ATTRIBUTE_ABILITIES = 'abilities';
+    public const ATTRIBUTE_ID = 'id';
+    public const ATTRIBUTE_NAME = 'name';
+    public const ATTRIBUTE_CODE = 'code';
+    public const ATTRIBUTE_ABILITIES = 'abilities';
 
     // ? Getter Modules
     /**

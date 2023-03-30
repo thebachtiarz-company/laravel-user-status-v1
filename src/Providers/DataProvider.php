@@ -2,6 +2,9 @@
 
 namespace TheBachtiarz\UserStatus\Providers;
 
+use TheBachtiarz\Base\BaseConfigInterface;
+use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
+
 class DataProvider
 {
     //
@@ -12,12 +15,20 @@ class DataProvider
      *
      * @return array
      */
-    public static function registerConfig(): array
+    public function registerConfig(): array
     {
         $registerConfig = [];
 
         // ! user status
-        $registerConfig[] = [];
+        $configRegistered = tbbaseconfig(BaseConfigInterface::CONFIG_REGISTERED);
+        $registerConfig[] = [
+            BaseConfigInterface::CONFIG_NAME . '.' . BaseConfigInterface::CONFIG_REGISTERED => array_merge(
+                $configRegistered,
+                [
+                    UserStatusConfigInterface::CONFIG_NAME
+                ]
+            )
+        ];
 
         return $registerConfig;
     }

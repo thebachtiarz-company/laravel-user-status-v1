@@ -2,10 +2,13 @@
 
 namespace TheBachtiarz\UserStatus\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use TheBachtiarz\Base\App\Repositories\AbstractRepository;
+use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 
-class StatusUserRepository
+class StatusUserRepository extends AbstractRepository
 {
     //
 
@@ -14,66 +17,77 @@ class StatusUserRepository
      * Get status by id
      *
      * @param integer $id
-     * @return StatusUser
+     * @return StatusUserInterface
      */
-    public function getById(int $id): StatusUser
+    public function getById(int $id): StatusUserInterface
     {
-        $_statusUser = StatusUser::find($id);
+        $statusUser = StatusUser::find($id);
 
-        if (!$_statusUser) throw new ModelNotFoundException("Status with id '$id' not found");
+        if (!$statusUser) throw new ModelNotFoundException("Status with id '$id' not found");
 
-        return $_statusUser;
+        return $statusUser;
     }
 
     /**
      * Get status by code
      *
      * @param string $code
-     * @return StatusUser
+     * @return StatusUserInterface
      */
-    public function getByCode(string $code): StatusUser
+    public function getByCode(string $code): StatusUserInterface
     {
-        $_statusUser = StatusUser::getByCode($code)->first();
+        $statusUser = StatusUser::getByCode($code)->first();
 
-        if (!$_statusUser) throw new ModelNotFoundException("Status with code '$code' not found");
+        if (!$statusUser) throw new ModelNotFoundException("Status with code '$code' not found");
 
-        return $_statusUser;
+        return $statusUser;
     }
 
     /**
      * Create new status
      *
-     * @param StatusUser $statusUser
-     * @return StatusUser
+     * @param StatusUserInterface $statusUserInterface
+     * @return StatusUserInterface
      */
-    public function create(StatusUser $statusUser): StatusUser
+    public function create(StatusUserInterface $statusUserInterface): StatusUserInterface
     {
-        $_data = [];
+        /** @var Model $statusUserInterface */
+        /** @var StatusUserInterface $create */
+        $create = $this->createFromModel($statusUserInterface);
 
-        foreach ($statusUser->getFillable() as $key => $attribute) {
-            $_data[$attribute] = $statusUser->__get($attribute);
-        }
+        if (!$create) throw new ModelNotFoundException("Failed to create new status");
 
-        $_create = StatusUser::create($_data);
-
-        if (!$_create) throw new ModelNotFoundException("Failed to create new status");
-
-        return $_create;
+        return $create;
     }
 
     /**
      * Update current status
      *
-     * @param StatusUser $statusUser
-     * @return StatusUSer
+     * @param StatusUserInterface $statusUserInterface
+     * @return StatusUSerInterface
      */
-    public function save(StatusUser $statusUser): StatusUSer
+    public function save(StatusUserInterface $statusUserInterface): StatusUSerInterface
     {
-        $_statusUser = $statusUser->save();
+        /** @var Model|StatusUserInterface $statusUserInterface */
+        $save = $statusUserInterface->save();
 
-        if (!$_statusUser) throw new ModelNotFoundException("Failed to save current status");
+        if (!$save) throw new ModelNotFoundException("Failed to save current status");
 
-        return $statusUser;
+        return $statusUserInterface;
+    }
+
+    /**
+     * Delete by id
+     *
+     * @param integer $id
+     * @return boolean
+     */
+    public function deleteById(int $id): bool
+    {
+        /** @var Model|StatusUserInterface $statusUser */
+        $statusUser = $this->getById($id);
+
+        return $statusUser->delete();
     }
 
     /**
@@ -84,13 +98,9 @@ class StatusUserRepository
      */
     public function deleteByCode(string $code): bool
     {
-        $_statusUser = $this->getByCode($code);
+        $statusUser = $this->getByCode($code);
 
-        $_delete = $_statusUser->delete();
-
-        if (!$_delete) throw new ModelNotFoundException("Failed to delete status with code '$code'");
-
-        return $_delete;
+        return $this->deleteById($statusUser->getId());
     }
 
     // ? Private Methods

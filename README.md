@@ -3,9 +3,9 @@
 
 -------
 ## Requires
-- [laravel/framework](https://github.com/laravel/framework/) v^9.30
-- [thebachtiarz/laravel-toolkit-v1](https://github.com/thebachtiarz/laravel-toolkit-v1/) v^2.x
-- [thebachtiarz-company/laravel-auth-v1](https://github.com/thebachtiarz-company/laravel-auth-v1) v^1.x
+- [laravel/framework](https://github.com/laravel/framework/) v^9.30 | v^10.0
+- [thebachtiarz-company/laravel-base-v1](https://github.com/thebachtiarz-company/laravel-base-v1/) v^1.x
+- [thebachtiarz-company/laravel-auth-v1](https://github.com/thebachtiarz-company/laravel-auth-v1) v^2.x
 
 ## Installation
 - composer config (only if you have access)
@@ -26,6 +26,16 @@ php artisan vendor:publish --provider="TheBachtiarz\UserStatus\ServiceProvider"
 - database migration
 ``` bash
 php artisan migrate
+```
+
+- application refresh
+``` bash
+php artisan thebachtiarz:base:app:refresh
+```
+
+- create default status
+``` bash
+php artisan thebachtiarz:userstatus:generate:default
 ```
 
 -------

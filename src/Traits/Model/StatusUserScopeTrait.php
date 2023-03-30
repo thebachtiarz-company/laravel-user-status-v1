@@ -4,7 +4,7 @@ namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserModelInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 
 /**
  * Status User Scope Trait
@@ -20,7 +20,7 @@ trait StatusUserScopeTrait
      */
     public function scopeGetByCode(Builder $builder, string $statusCode): Builder
     {
-        $_statusCodeAttribute = StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE;
+        $_statusCodeAttribute = StatusUserInterface::ATTRIBUTE_CODE;
 
         return $builder->where(DB::raw("BINARY `$_statusCodeAttribute`"), $statusCode);
     }
@@ -34,7 +34,7 @@ trait StatusUserScopeTrait
      */
     public function scopeGetByCodes(Builder $builder, array $statusCodes): Builder
     {
-        $_statusCodeAttribute = StatusUserModelInterface::STATUS_USER_ATTRIBUTE_CODE;
+        $_statusCodeAttribute = StatusUserInterface::ATTRIBUTE_CODE;
 
         return $builder->whereIn(DB::raw("BINARY `$_statusCodeAttribute`"), $statusCodes);
     }

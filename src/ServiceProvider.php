@@ -12,15 +12,15 @@ class ServiceProvider extends LaravelServiceProvider
 
     public function register(): void
     {
-        /**
-         * @var AppsProvider $appsProvider
-         */
-        $appsProvider = new AppsProvider;
+        $container = \Illuminate\Container\Container::getInstance();
 
-        $appsProvider->registerConfig();
+        /** @var AppsProvider $_appsProvider */
+        $_appsProvider = $container->make(AppsProvider::class);
+
+        $_appsProvider->registerConfig();
 
         if ($this->app->runningInConsole()) {
-            $this->commands($appsProvider->registerCommands());
+            $this->commands(AppsProvider::COMMANDS);
         }
     }
 
@@ -28,7 +28,7 @@ class ServiceProvider extends LaravelServiceProvider
     {
         if (app()->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/' . UserStatusConfigInterface::USER_STATUS_CONFIG_NAME . '.php' => config_path(UserStatusConfigInterface::USER_STATUS_CONFIG_NAME . '.php'),
+                __DIR__ . '/../config/' . UserStatusConfigInterface::CONFIG_NAME . '.php' => config_path(UserStatusConfigInterface::CONFIG_NAME . '.php'),
             ], 'thebachtiarz-userstatus-config');
 
             $this->publishes([

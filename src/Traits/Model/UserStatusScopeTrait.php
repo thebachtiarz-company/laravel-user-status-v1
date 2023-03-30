@@ -3,9 +3,10 @@
 namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Builder;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
+use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
-use TheBachtiarz\UserStatus\Models\User;
 
 /**
  * User Status Scope Trait
@@ -18,24 +19,24 @@ trait UserStatusScopeTrait
      * Get by user
      *
      * @param Builder $builder
-     * @param User $user
+     * @param UserInterface $userInterface
      * @return Builder
      */
-    public function scopeGetByUser(Builder $builder, User $user): Builder
+    public function scopeGetByUser(Builder $builder, UserInterface $userInterface): Builder
     {
-        return $builder->where(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_USERID, $user->getId());
+        return $builder->where(UserStatusInterface::ATTRIBUTE_USERID, $userInterface->getId());
     }
 
     /**
      * Get by status user
      *
      * @param Builder $builder
-     * @param StatusUser $statusUser
+     * @param StatusUserInterface $statusUserInterface
      * @return Builder
      */
-    public function scopeGetByStatusUser(Builder $builder, StatusUser $statusUser): Builder
+    public function scopeGetByStatusUser(Builder $builder, StatusUserInterface $statusUserInterface): Builder
     {
-        return $builder->where(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_STATUSUSERID, $statusUser->getId());
+        return $builder->where(UserStatusInterface::ATTRIBUTE_STATUSUSERID, $statusUserInterface->getId());
     }
 
     /**
@@ -55,6 +56,6 @@ trait UserStatusScopeTrait
             $_statusUserIds[] = $statusUser->id;
         }
 
-        return $builder->whereIn(UserStatusModelInterface::USER_STATUS_ATTRIBUTE_STATUSUSERID, $_statusUserIds);
+        return $builder->whereIn(UserStatusInterface::ATTRIBUTE_STATUSUSERID, $_statusUserIds);
     }
 }

@@ -2,21 +2,21 @@
 
 namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
-interface UserStatusModelInterface
+interface UserStatusInterface
 {
     /**
      * Model attributes
      *
      * @var array
      */
-    public const USER_STATUS_ATTRIBUTES_FILLABLE = [
-        self::USER_STATUS_ATTRIBUTE_USERID,
-        self::USER_STATUS_ATTRIBUTE_STATUSUSERID
+    public const ATTRIBUTES_FILLABLE = [
+        self::ATTRIBUTE_USERID,
+        self::ATTRIBUTE_STATUSUSERID
     ];
 
-    public const USER_STATUS_ATTRIBUTE_ID = 'id';
-    public const USER_STATUS_ATTRIBUTE_USERID = 'user_id';
-    public const USER_STATUS_ATTRIBUTE_STATUSUSERID = 'status_user_id';
+    public const ATTRIBUTE_ID = 'id';
+    public const ATTRIBUTE_USERID = 'user_id';
+    public const ATTRIBUTE_STATUSUSERID = 'status_user_id';
 
     // ? Getter Modules
     /**

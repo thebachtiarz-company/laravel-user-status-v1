@@ -4,18 +4,19 @@ namespace TheBachtiarz\UserStatus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserModelInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
+use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
+use TheBachtiarz\UserStatus\Traits\Model\UserStatusMapTrait;
 use TheBachtiarz\UserStatus\Traits\Model\UserStatusScopeTrait;
 
-class UserStatus extends Model implements UserStatusModelInterface
+class UserStatus extends Model implements UserStatusInterface
 {
-    use UserStatusScopeTrait;
+    use UserStatusScopeTrait, UserStatusMapTrait;
 
     /**
      * {@inheritDoc}
      */
-    protected $fillable = self::USER_STATUS_ATTRIBUTES_FILLABLE;
+    protected $fillable = self::ATTRIBUTES_FILLABLE;
 
     // ? Getter Modules
     /**
@@ -23,7 +24,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function getId(): ?int
     {
-        return $this->__get(self::USER_STATUS_ATTRIBUTE_ID);
+        return $this->__get(self::ATTRIBUTE_ID);
     }
 
     /**
@@ -31,7 +32,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function getUserId(): ?int
     {
-        return $this->__get(self::USER_STATUS_ATTRIBUTE_USERID);
+        return $this->__get(self::ATTRIBUTE_USERID);
     }
 
     /**
@@ -39,7 +40,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function getStatusUserId(): ?int
     {
-        return $this->__get(self::USER_STATUS_ATTRIBUTE_STATUSUSERID);
+        return $this->__get(self::ATTRIBUTE_STATUSUSERID);
     }
 
     // ? Setter Modules
@@ -48,7 +49,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function setId(int $id): self
     {
-        $this->__set(self::USER_STATUS_ATTRIBUTE_ID, $id);
+        $this->__set(self::ATTRIBUTE_ID, $id);
 
         return $this;
     }
@@ -58,7 +59,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function setUserId(int $userId): self
     {
-        $this->__set(self::USER_STATUS_ATTRIBUTE_USERID, $userId);
+        $this->__set(self::ATTRIBUTE_USERID, $userId);
 
         return $this;
     }
@@ -68,7 +69,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function setStatusUserId(int $statusUserId): self
     {
-        $this->__set(self::USER_STATUS_ATTRIBUTE_STATUSUSERID, $statusUserId);
+        $this->__set(self::ATTRIBUTE_STATUSUSERID, $statusUserId);
 
         return $this;
     }
@@ -81,7 +82,7 @@ class UserStatus extends Model implements UserStatusModelInterface
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, self::USER_STATUS_ATTRIBUTE_USERID);
+        return $this->belongsTo(User::class, self::ATTRIBUTE_USERID);
     }
 
     /**
@@ -93,8 +94,8 @@ class UserStatus extends Model implements UserStatusModelInterface
     {
         return $this->belongsTo(
             StatusUser::class,
-            self::USER_STATUS_ATTRIBUTE_STATUSUSERID,
-            UserModelInterface::USER_ATTRIBUTE_ID
+            self::ATTRIBUTE_STATUSUSERID,
+            UserInterface::ATTRIBUTE_ID
         );
     }
 }

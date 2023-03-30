@@ -3,7 +3,7 @@
 namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusModelInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 
 /**
@@ -23,6 +23,6 @@ trait UserStatusRelationTrait
      */
     public function userstatus(): HasOne
     {
-        return $this->hasOne(UserStatus::class, UserStatusModelInterface::USER_STATUS_ATTRIBUTE_USERID);
+        return $this->hasOne(UserStatus::class, UserStatusInterface::ATTRIBUTE_USERID);
     }
 }
