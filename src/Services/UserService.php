@@ -7,6 +7,7 @@ use TheBachtiarz\Auth\Interfaces\Model\Data\UserCreateDataInterface;
 use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
 use TheBachtiarz\Auth\Services\UserService as TbAuthUserService;
 use TheBachtiarz\Base\App\Services\AbstractService;
+use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 
 class UserService extends AbstractService
 {
@@ -41,7 +42,7 @@ class UserService extends AbstractService
         try {
             $userIdentifier = '';
 
-            switch (tbauthconfig(AuthConfigInterface::IDENTITY_METHOD)) {
+            switch (tbconfigvalue(UserStatusConfigInterface::CONFIG_NAME . '.' . AuthConfigInterface::IDENTITY_METHOD)) {
                 case UserInterface::ATTRIBUTE_EMAIL:
                     $userIdentifier = $result[UserInterface::ATTRIBUTE_EMAIL];
                     break;
@@ -52,7 +53,7 @@ class UserService extends AbstractService
                     break;
             }
 
-            $process = $this->statusUserService->createUserStatus($userIdentifier, $statusUserCode);
+            $process = $this->statusUserService->hideResponseResult()->createUserStatus($userIdentifier, $statusUserCode);
             if (!$process) throw new \Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
         } catch (\Throwable $th) {
             $this->log($th);

@@ -4,6 +4,7 @@ namespace TheBachtiarz\UserStatus\Console\Commands;
 
 use Illuminate\Console\Command;
 use TheBachtiarz\Base\App\Libraries\Log\LogLibrary;
+use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Services\StatusUserService;
 
 class GenerateDefaultStatusCommand extends Command
@@ -51,7 +52,7 @@ class GenerateDefaultStatusCommand extends Command
             $this->info('======> Generate default status user entity, started');
 
             $data = (new \TheBachtiarz\UserStatus\Models\Data\StatusUserData)
-                ->setCode(tbuserstatusconfig('default_status_code'))
+                ->setCode(tbconfigvalue(UserStatusConfigInterface::CONFIG_NAME . '.default_status_code'))
                 ->setName('Default')
                 ->setAbilities(['guest' => ['*']]);
             $create = $this->statusUserService->createOrUpdate($data);
