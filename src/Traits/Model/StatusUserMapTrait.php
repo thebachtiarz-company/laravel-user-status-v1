@@ -2,7 +2,6 @@
 
 namespace TheBachtiarz\UserStatus\Traits\Model;
 
-use Illuminate\Container\Container;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 use TheBachtiarz\UserStatus\Models\Object\StatusUser\AbilityObject;
 
@@ -23,7 +22,7 @@ trait StatusUserMapTrait
         /** @var StatusUserInterface $this */
 
         /** @var AbilityObject $abilityObject */
-        $abilityObject = Container::getInstance()->make(AbilityObject::class);
+        $abilityObject = app()->make(AbilityObject::class);
 
         return [
             StatusUserInterface::ATTRIBUTE_NAME => $this->getName(),

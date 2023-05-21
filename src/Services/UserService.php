@@ -42,7 +42,7 @@ class UserService extends AbstractService
         try {
             $userIdentifier = '';
 
-            switch (tbconfigvalue(UserStatusConfigInterface::CONFIG_NAME . '.' . AuthConfigInterface::IDENTITY_METHOD)) {
+            switch (tbauthconfig(AuthConfigInterface::IDENTITY_METHOD, false)) {
                 case UserInterface::ATTRIBUTE_EMAIL:
                     $userIdentifier = $result[UserInterface::ATTRIBUTE_EMAIL];
                     break;
@@ -54,7 +54,7 @@ class UserService extends AbstractService
             }
 
             $process = $this->statusUserService->hideResponseResult()->createUserStatus($userIdentifier, $statusUserCode);
-            if (!$process) throw new \Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
+            if (!$process['status']) throw new \Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
         } catch (\Throwable $th) {
             $this->log($th);
         }

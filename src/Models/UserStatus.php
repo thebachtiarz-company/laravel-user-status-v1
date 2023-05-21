@@ -2,16 +2,21 @@
 
 namespace TheBachtiarz\UserStatus\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
+use TheBachtiarz\Base\App\Models\AbstractModel;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Traits\Model\UserStatusMapTrait;
 use TheBachtiarz\UserStatus\Traits\Model\UserStatusScopeTrait;
 
-class UserStatus extends Model implements UserStatusInterface
+class UserStatus extends AbstractModel implements UserStatusInterface
 {
     use UserStatusScopeTrait, UserStatusMapTrait;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $table = self::TABLE_NAME;
 
     /**
      * {@inheritDoc}
@@ -19,14 +24,6 @@ class UserStatus extends Model implements UserStatusInterface
     protected $fillable = self::ATTRIBUTES_FILLABLE;
 
     // ? Getter Modules
-    /**
-     * {@inheritDoc}
-     */
-    public function getId(): ?int
-    {
-        return $this->__get(self::ATTRIBUTE_ID);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -44,16 +41,6 @@ class UserStatus extends Model implements UserStatusInterface
     }
 
     // ? Setter Modules
-    /**
-     * {@inheritDoc}
-     */
-    public function setId(int $id): self
-    {
-        $this->__set(self::ATTRIBUTE_ID, $id);
-
-        return $this;
-    }
-
     /**
      * {@inheritDoc}
      */

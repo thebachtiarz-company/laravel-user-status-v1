@@ -2,15 +2,15 @@
 
 namespace TheBachtiarz\UserStatus\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use TheBachtiarz\Base\App\Models\AbstractModel;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Traits\Model\StatusUserMapTrait;
 use TheBachtiarz\UserStatus\Traits\Model\StatusUserScopeTrait;
 
-class StatusUser extends Model implements StatusUserInterface
+class StatusUser extends AbstractModel implements StatusUserInterface
 {
     use SoftDeletes;
 
@@ -19,17 +19,14 @@ class StatusUser extends Model implements StatusUserInterface
     /**
      * {@inheritDoc}
      */
-    protected $fillable = self::ATTRIBUTES_FILLABLE;
+    protected $table = self::TABLE_NAME;
 
-    // ? Getter Modules
     /**
      * {@inheritDoc}
      */
-    public function getId(): ?int
-    {
-        return $this->__get(self::ATTRIBUTE_ID);
-    }
+    protected $fillable = self::ATTRIBUTES_FILLABLE;
 
+    // ? Getter Modules
     /**
      * {@inheritDoc}
      */
@@ -55,16 +52,6 @@ class StatusUser extends Model implements StatusUserInterface
     }
 
     // ? Setter Modules
-    /**
-     * {@inheritDoc}
-     */
-    public function setId(int $id): self
-    {
-        $this->__set(self::ATTRIBUTE_ID, $id);
-
-        return $this;
-    }
-
     /**
      * {@inheritDoc}
      */

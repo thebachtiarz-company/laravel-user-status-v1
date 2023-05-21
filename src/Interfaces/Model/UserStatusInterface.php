@@ -2,8 +2,17 @@
 
 namespace TheBachtiarz\UserStatus\Interfaces\Model;
 
-interface UserStatusInterface
+use TheBachtiarz\Base\App\Interfaces\Model\AbstractModelInterface;
+
+interface UserStatusInterface extends AbstractModelInterface
 {
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    public const TABLE_NAME = 'user_statuses';
+
     /**
      * Model attributes
      *
@@ -14,18 +23,10 @@ interface UserStatusInterface
         self::ATTRIBUTE_STATUSUSERID
     ];
 
-    public const ATTRIBUTE_ID = 'id';
     public const ATTRIBUTE_USERID = 'user_id';
     public const ATTRIBUTE_STATUSUSERID = 'status_user_id';
 
     // ? Getter Modules
-    /**
-     * Get id
-     *
-     * @return integer|null
-     */
-    public function getId(): ?int;
-
     /**
      * Get user id
      *
@@ -41,14 +42,6 @@ interface UserStatusInterface
     public function getStatusUserId(): ?int;
 
     // ? Setter Modules
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return self
-     */
-    public function setId(int $id): self;
-
     /**
      * Set user id
      *

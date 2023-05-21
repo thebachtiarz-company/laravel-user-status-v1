@@ -48,14 +48,12 @@ class StatusUserService extends AbstractService
      *
      * @param StatusUserDataInterface $statusUserDataInterface
      * @param boolean $useProposedCode
-     * @return StatusUser|null
+     * @return array
      */
     public function createOrUpdate(
         StatusUserDataInterface $statusUserDataInterface,
         bool $useProposedCode = false
-    ): ?StatusUser {
-        $status = false;
-        $result = null;
+    ): array {
         $action = '';
 
         try {
@@ -78,11 +76,7 @@ class StatusUserService extends AbstractService
             }
 
             CREATE_PROCESS:
-            if (!$useProposedCode) {
-                $statusUserDataInterface->setCode($this->statusUserHelper->generateNewCode());
-            }
-
-            if (!$statusUserDataInterface->getCode()) {
+            if (!$useProposedCode || !$statusUserDataInterface->getCode()) {
                 $statusUserDataInterface->setCode($this->statusUserHelper->generateNewCode());
             }
 
@@ -97,14 +91,19 @@ class StatusUserService extends AbstractService
             END_PROCESS:
             /** @var \TheBachtiarz\UserStatus\Models\StatusUser $result */
             $result = $this->statusUserRepository->getByCode($statusUserDataInterface->getCode());
-            $status = true;
+
+            $this->setResponseData(message: sprintf('Successfully %s status user', $action), data: $result?->simpleListMap());
+
+            return $this->serviceResult(
+                status: true,
+                message: sprintf('Successfully %s status user', $action),
+                data: $result?->simpleListMap()
+            );
         } catch (\Throwable $th) {
             $this->log($th);
+            $this->setResponseData(message: sprintf('Failed to %s status user', $action), status: 'error', httpCode: 202);
+            return $this->serviceResult(message: sprintf('Failed to %s status user', $action));
         }
-
-        $this->setResponseData(sprintf('%s %s status user', $status ? 'Successfully' : 'Failed to', $action), $result->simpleListMap());
-
-        return $result;
     }
 
     /**
@@ -112,13 +111,10 @@ class StatusUserService extends AbstractService
      *
      * @param string $userIdentifier
      * @param string $statusCode
-     * @return UserInterface|null
+     * @return array
      */
-    public function createUserStatus(string $userIdentifier, string $statusCode): ?UserInterface
+    public function createUserStatus(string $userIdentifier, string $statusCode): array
     {
-        $status = false;
-        $result = null;
-
         try {
             /** @var UserInterface $user */
             $user = $this->userRepository->getByIdentifier($userIdentifier);
@@ -131,16 +127,16 @@ class StatusUserService extends AbstractService
                 ->setUserId($user->getId())
                 ->setStatusUserId($statusUser->getId());
 
-            $this->userStatusRepository->create($userStatusPrepare);
+            /** @var \TheBachtiarz\UserStatus\Models\UserStatus $create */
+            $create = $this->userStatusRepository->create($userStatusPrepare);
 
-            $result = $user;
+            $this->setResponseData(message: 'Successfully create new user status', data: $create?->simpleListMap());
+            return $this->serviceResult(status: true, message: 'Successfully create new user status', data: $create?->simpleListMap());
         } catch (\Throwable $th) {
             $this->log($th);
+            $this->setResponseData(message: 'Failed to create new user status', status: 'error', httpCode: 202);
+            return $this->serviceResult(message: 'Failed to create status user');
         }
-
-        $this->setResponseData(sprintf('%s create user status', $status ? 'Successfully' : 'Failed to'));
-
-        return $result;
     }
 
     // ? Protected Methods
