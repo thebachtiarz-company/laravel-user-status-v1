@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Models\Object\StatusUser;
+
+use function json_decode;
+use function json_encode;
 
 class AbilityObject
 {
-    //
-
     // ? Public Methods
+
     /**
      * Encode ability
      *
      * @param array $ability
-     * @return string
      */
     public function encode(array $ability): string
     {
@@ -21,7 +24,6 @@ class AbilityObject
     /**
      * Decode ability
      *
-     * @param string $ability
      * @return array
      */
     public function decode(string $ability): array

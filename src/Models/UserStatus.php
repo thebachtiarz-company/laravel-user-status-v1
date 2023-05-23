@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,39 +13,23 @@ use TheBachtiarz\UserStatus\Traits\Model\UserStatusScopeTrait;
 
 class UserStatus extends AbstractModel implements UserStatusInterface
 {
-    use UserStatusScopeTrait, UserStatusMapTrait;
+    use UserStatusScopeTrait;
+    use UserStatusMapTrait;
 
-    /**
-     * {@inheritDoc}
-     */
     protected $table = self::TABLE_NAME;
 
-    /**
-     * {@inheritDoc}
-     */
     protected $fillable = self::ATTRIBUTES_FILLABLE;
 
-    // ? Getter Modules
-    /**
-     * {@inheritDoc}
-     */
-    public function getUserId(): ?int
+    public function getUserId(): int|null
     {
         return $this->__get(self::ATTRIBUTE_USERID);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getStatusUserId(): ?int
+    public function getStatusUserId(): int|null
     {
         return $this->__get(self::ATTRIBUTE_STATUSUSERID);
     }
 
-    // ? Setter Modules
-    /**
-     * {@inheritDoc}
-     */
     public function setUserId(int $userId): self
     {
         $this->__set(self::ATTRIBUTE_USERID, $userId);
@@ -51,9 +37,6 @@ class UserStatus extends AbstractModel implements UserStatusInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setStatusUserId(int $statusUserId): self
     {
         $this->__set(self::ATTRIBUTE_STATUSUSERID, $statusUserId);
@@ -62,10 +45,9 @@ class UserStatus extends AbstractModel implements UserStatusInterface
     }
 
     // ? Relations
+
     /**
      * Relation user belongs to
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -74,15 +56,13 @@ class UserStatus extends AbstractModel implements UserStatusInterface
 
     /**
      * Relation status user belongs to
-     *
-     * @return BelongsTo
      */
     public function statususer(): BelongsTo
     {
         return $this->belongsTo(
             StatusUser::class,
             self::ATTRIBUTE_STATUSUSERID,
-            UserInterface::ATTRIBUTE_ID
+            UserInterface::ATTRIBUTE_ID,
         );
     }
 }

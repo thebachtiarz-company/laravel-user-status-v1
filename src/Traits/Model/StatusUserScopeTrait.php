@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -13,29 +15,21 @@ trait StatusUserScopeTrait
 {
     /**
      * Get by code
-     *
-     * @param Builder $builder
-     * @param string $statusCode
-     * @return Builder
      */
     public function scopeGetByCode(Builder $builder, string $statusCode): Builder
     {
-        $_statusCodeAttribute = StatusUserInterface::ATTRIBUTE_CODE;
+        $attribute = StatusUserInterface::ATTRIBUTE_CODE;
 
-        return $builder->where(DB::raw("BINARY `$_statusCodeAttribute`"), $statusCode);
+        return $builder->where(DB::raw("BINARY `$attribute`"), $statusCode);
     }
 
     /**
      * Get by codes
-     *
-     * @param Builder $builder
-     * @param array $statusCodes
-     * @return Builder
      */
     public function scopeGetByCodes(Builder $builder, array $statusCodes): Builder
     {
-        $_statusCodeAttribute = StatusUserInterface::ATTRIBUTE_CODE;
+        $attribute = StatusUserInterface::ATTRIBUTE_CODE;
 
-        return $builder->whereIn(DB::raw("BINARY `$_statusCodeAttribute`"), $statusCodes);
+        return $builder->whereIn(DB::raw("BINARY `$attribute`"), $statusCodes);
     }
 }

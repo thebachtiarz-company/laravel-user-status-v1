@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Models\Data;
 
 use TheBachtiarz\UserStatus\Interfaces\Model\Data\StatusUserDataInterface;
 
+use function in_array;
+
 class StatusUserData implements StatusUserDataInterface
 {
-    //
-
     /**
      * Data
      *
@@ -15,18 +17,11 @@ class StatusUserData implements StatusUserDataInterface
      */
     private array $data = [];
 
-    // ? Public Methods
-    /**
-     * {@inheritDoc}
-     */
-    public function getData(?string $attribute): mixed
+    public function getData(string|null $attribute): mixed
     {
         return @$this->data[$attribute] ?? $this->data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setData(string $attribute, mixed $value): self
     {
         if (in_array($attribute, self::ATTRIBUTES)) {
@@ -40,35 +35,22 @@ class StatusUserData implements StatusUserDataInterface
 
     // ? Private Methods
 
-    // ? Getter Modules
-    /**
-     * {@inheritDoc}
-     */
-    public function getCode(): ?string
+
+    public function getCode(): string|null
     {
         return $this->data[self::ATTRIBUTE_CODE];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getName(): ?string
+    public function getName(): string|null
     {
         return $this->data[self::ATTRIBUTE_NAME];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAbilities(): ?array
+    public function getAbilities(): array|null
     {
         return $this->data[self::ATTRIBUTE_ABILITIES];
     }
 
-    // ? Setter Modules
-    /**
-     * {@inheritDoc}
-     */
     public function setCode(string $code): self
     {
         $this->data[self::ATTRIBUTE_CODE] = $code;
@@ -76,9 +58,6 @@ class StatusUserData implements StatusUserDataInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setName(string $name): self
     {
         $this->data[self::ATTRIBUTE_NAME] = $name;
@@ -86,12 +65,9 @@ class StatusUserData implements StatusUserDataInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setAbilities(array $ability): self
+    public function setAbilities(array $abilities): self
     {
-        $this->data[self::ATTRIBUTE_ABILITIES] = $ability;
+        $this->data[self::ATTRIBUTE_ABILITIES] = $abilities;
 
         return $this;
     }

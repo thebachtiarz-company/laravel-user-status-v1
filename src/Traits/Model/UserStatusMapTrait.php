@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
@@ -11,8 +13,6 @@ use TheBachtiarz\UserStatus\Models\UserStatus;
  */
 trait UserStatusMapTrait
 {
-    //
-
     /**
      * User status simple list map
      *
@@ -23,7 +23,7 @@ trait UserStatusMapTrait
         /** @var UserStatus $this */
         return [
             UserStatusInterface::ATTRIBUTE_USERID => $this->getUserId(),
-            StatusUserInterface::ATTRIBUTE_NAME => $this->statususer->{StatusUserInterface::ATTRIBUTE_NAME}
+            StatusUserInterface::ATTRIBUTE_NAME => $this->statususer->{StatusUserInterface::ATTRIBUTE_NAME},
         ];
     }
 }

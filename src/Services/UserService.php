@@ -1,38 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Services;
 
+use Exception;
 use TheBachtiarz\Auth\Interfaces\Config\AuthConfigInterface;
 use TheBachtiarz\Auth\Interfaces\Model\Data\UserCreateDataInterface;
 use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
 use TheBachtiarz\Auth\Services\UserService as TbAuthUserService;
 use TheBachtiarz\Base\App\Services\AbstractService;
-use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
+use Throwable;
+
+use function sprintf;
+use function tbauthconfig;
 
 class UserService extends AbstractService
 {
-    //
-
     /**
      * Constructor
-     *
-     * @param TbAuthUserService $tbAuthUserService
-     * @param StatusUserService $statusUserService
      */
     public function __construct(
         protected TbAuthUserService $tbAuthUserService,
-        protected StatusUserService $statusUserService
+        protected StatusUserService $statusUserService,
     ) {
         $this->tbAuthUserService = $tbAuthUserService;
         $this->statusUserService = $statusUserService;
     }
 
     // ? Public Methods
+
     /**
      * Create new user with status user role applied
      *
-     * @param UserCreateDataInterface $userCreateDataInterface
-     * @param string $statusUserCode
      * @return array
      */
     public function createNewUserWithStatus(UserCreateDataInterface $userCreateDataInterface, string $statusUserCode): array
@@ -54,8 +54,10 @@ class UserService extends AbstractService
             }
 
             $process = $this->statusUserService->hideResponseResult()->createUserStatus($userIdentifier, $statusUserCode);
-            if (!$process['status']) throw new \Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
-        } catch (\Throwable $th) {
+            if (! $process['status']) {
+                throw new Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
+            }
+        } catch (Throwable $th) {
             $this->log($th);
         }
 

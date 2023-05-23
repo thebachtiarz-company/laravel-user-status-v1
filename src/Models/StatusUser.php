@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,48 +15,28 @@ use TheBachtiarz\UserStatus\Traits\Model\StatusUserScopeTrait;
 class StatusUser extends AbstractModel implements StatusUserInterface
 {
     use SoftDeletes;
+    use StatusUserScopeTrait;
+    use StatusUserMapTrait;
 
-    use StatusUserScopeTrait, StatusUserMapTrait;
-
-    /**
-     * {@inheritDoc}
-     */
     protected $table = self::TABLE_NAME;
 
-    /**
-     * {@inheritDoc}
-     */
     protected $fillable = self::ATTRIBUTES_FILLABLE;
 
-    // ? Getter Modules
-    /**
-     * {@inheritDoc}
-     */
-    public function getName(): ?string
+    public function getName(): string|null
     {
         return $this->__get(self::ATTRIBUTE_NAME);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getCode(): ?string
+    public function getCode(): string|null
     {
         return $this->__get(self::ATTRIBUTE_CODE);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getAbilities(): ?string
+    public function getAbilities(): string|null
     {
         return $this->__get(self::ATTRIBUTE_ABILITIES);
     }
 
-    // ? Setter Modules
-    /**
-     * {@inheritDoc}
-     */
     public function setName(string $name): self
     {
         $this->__set(self::ATTRIBUTE_NAME, $name);
@@ -62,9 +44,6 @@ class StatusUser extends AbstractModel implements StatusUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setCode(string $code): self
     {
         $this->__set(self::ATTRIBUTE_CODE, $code);
@@ -72,9 +51,6 @@ class StatusUser extends AbstractModel implements StatusUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setAbilities(string $abilities): self
     {
         $this->__set(self::ATTRIBUTE_ABILITIES, $abilities);
@@ -83,10 +59,9 @@ class StatusUser extends AbstractModel implements StatusUserInterface
     }
 
     // ? Relations
+
     /**
      * Relation user status has many
-     *
-     * @return HasMany
      */
     public function userstatuses(): HasMany
     {

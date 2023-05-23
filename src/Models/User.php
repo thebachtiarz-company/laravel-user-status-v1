@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Models;
 
 use TheBachtiarz\Auth\Interfaces\Model\UserInterface;

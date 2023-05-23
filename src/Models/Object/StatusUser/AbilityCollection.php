@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Models\Object\StatusUser;
 
 use TheBachtiarz\Base\App\Libraries\Log\LogLibrary;
 use TheBachtiarz\UserStatus\Models\StatusUser;
+use Throwable;
+
+use function assert;
 
 class AbilityCollection
 {
-    //
-
     /**
      * Constructor
-     *
-     * @param LogLibrary $logLibrary
      */
     public function __construct(
-        protected LogLibrary $logLibrary
+        protected LogLibrary $logLibrary,
     ) {
         $this->logLibrary = $logLibrary;
     }
 
     // ? Public Methods
+
     /**
      * Get collection
      *
@@ -32,11 +34,11 @@ class AbilityCollection
 
         $result = [];
 
-        /** @var StatusUser $statusUser */
         foreach ($statusUsers ?? [] as $key => $statusUser) {
+            assert($statusUser instanceof StatusUser);
             try {
                 $result[] = $statusUser->simpleListMap();
-            } catch (\Throwable $th) {
+            } catch (Throwable $th) {
                 $this->logLibrary->log($th);
             }
         }

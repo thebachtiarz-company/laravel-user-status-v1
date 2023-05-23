@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TheBachtiarz\UserStatus\Traits\Model;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -13,14 +15,8 @@ use TheBachtiarz\UserStatus\Models\StatusUser;
  */
 trait UserStatusScopeTrait
 {
-    //
-
     /**
      * Get by user
-     *
-     * @param Builder $builder
-     * @param UserInterface $userInterface
-     * @return Builder
      */
     public function scopeGetByUser(Builder $builder, UserInterface $userInterface): Builder
     {
@@ -29,10 +25,6 @@ trait UserStatusScopeTrait
 
     /**
      * Get by status user
-     *
-     * @param Builder $builder
-     * @param StatusUserInterface $statusUserInterface
-     * @return Builder
      */
     public function scopeGetByStatusUser(Builder $builder, StatusUserInterface $statusUserInterface): Builder
     {
@@ -41,21 +33,17 @@ trait UserStatusScopeTrait
 
     /**
      * Get by status codes
-     *
-     * @param Builder $builder
-     * @param array $statusCodes
-     * @return Builder
      */
     public function scopeGetByStatusCodes(Builder $builder, array $statusCodes): Builder
     {
-        $_statusUsers = StatusUser::getByCodes($statusCodes)->get();
+        $statusUsers = StatusUser::getByCodes($statusCodes)->get();
 
-        $_statusUserIds = [];
+        $statusUserIds = [];
 
-        foreach ($_statusUsers as $key => $statusUser) {
-            $_statusUserIds[] = $statusUser->id;
+        foreach ($statusUsers as $key => $statusUser) {
+            $statusUserIds[] = $statusUser->id;
         }
 
-        return $builder->whereIn(UserStatusInterface::ATTRIBUTE_STATUSUSERID, $_statusUserIds);
+        return $builder->whereIn(UserStatusInterface::ATTRIBUTE_STATUSUSERID, $statusUserIds);
     }
 }
