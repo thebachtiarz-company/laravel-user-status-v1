@@ -71,6 +71,7 @@ class UserService extends AbstractService
         } catch (Throwable $th) {
             DB::rollBack();
             $this->log($th);
+            $this->setResponseData(message: $th->getMessage(), status: 'error', httpCode: 202);
 
             return $this->serviceResult(message: $th->getMessage());
         }

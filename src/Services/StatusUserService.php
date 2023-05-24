@@ -137,7 +137,7 @@ class StatusUserService extends AbstractService
             $this->log($th);
             $this->setResponseData(message: 'Failed to create new user status', status: 'error', httpCode: 202);
 
-            return $this->serviceResult(message: 'Failed to create status user');
+            return $this->serviceResult(message: 'Failed to create user status');
         }
     }
 
