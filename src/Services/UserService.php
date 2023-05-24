@@ -66,6 +66,7 @@ class UserService extends AbstractService
             $result = array_merge($result, ['status' => $process['data'][StatusUserInterface::ATTRIBUTE_NAME]]);
 
             DB::commit();
+            $this->setResponseData(message: 'Successfully create new user with status', data: $result);
 
             return $result;
         } catch (Throwable $th) {
