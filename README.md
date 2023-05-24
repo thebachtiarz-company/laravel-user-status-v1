@@ -3,7 +3,7 @@
 
 -------
 ## Requires
-- [laravel/framework](https://github.com/laravel/framework/) v^9.30 | v^10.0
+- [laravel/framework](https://github.com/laravel/framework/) v^10.0
 - [thebachtiarz-company/laravel-base-v1](https://github.com/thebachtiarz-company/laravel-base-v1/) v^1.x
 - [thebachtiarz-company/laravel-auth-v1](https://github.com/thebachtiarz-company/laravel-auth-v1) v^2.x
 

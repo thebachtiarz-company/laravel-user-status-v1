@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace TheBachtiarz\UserStatus\Services;
 
 use Exception;
+use Illuminate\Support\Facades\DB;
 use TheBachtiarz\Auth\Interfaces\Config\AuthConfigInterface;
 use TheBachtiarz\Auth\Interfaces\Model\Data\UserCreateDataInterface;
 use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
 use TheBachtiarz\Auth\Services\UserService as TbAuthUserService;
 use TheBachtiarz\Base\App\Services\AbstractService;
+use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 use Throwable;
 
+use function array_merge;
 use function sprintf;
 use function tbauthconfig;
 
@@ -37,9 +40,11 @@ class UserService extends AbstractService
      */
     public function createNewUserWithStatus(UserCreateDataInterface $userCreateDataInterface, string $statusUserCode): array
     {
-        $result = $this->tbAuthUserService->createNewUser($userCreateDataInterface);
-
         try {
+            DB::beginTransaction();
+
+            $result = $this->tbAuthUserService->createNewUser($userCreateDataInterface);
+
             $userIdentifier = '';
 
             switch (tbauthconfig(AuthConfigInterface::IDENTITY_METHOD, false)) {
@@ -57,11 +62,18 @@ class UserService extends AbstractService
             if (! $process['status']) {
                 throw new Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
             }
-        } catch (Throwable $th) {
-            $this->log($th);
-        }
 
-        return $result;
+            $result = array_merge($result, ['status' => $process['data'][StatusUserInterface::ATTRIBUTE_NAME]]);
+
+            DB::commit();
+
+            return $result;
+        } catch (Throwable $th) {
+            DB::rollBack();
+            $this->log($th);
+
+            return $this->serviceResult(message: $th->getMessage());
+        }
     }
 
     // ? Protected Methods

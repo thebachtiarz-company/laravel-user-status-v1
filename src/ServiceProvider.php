@@ -35,12 +35,10 @@ class ServiceProvider extends LaravelServiceProvider
             return;
         }
 
-        $this->publishes([
-            __DIR__ . '/../config/' . UserStatusConfigInterface::CONFIG_NAME . '.php' => config_path(UserStatusConfigInterface::CONFIG_NAME . '.php'),
-        ], 'thebachtiarz-userstatus-config');
+        $configName  = UserStatusConfigInterface::CONFIG_NAME;
+        $publishName = 'thebachtiarz-userstatus';
 
-        $this->publishes([
-            __DIR__ . '/../database/migrations' => database_path('migrations'),
-        ], 'thebachtiarz-userstatus-migrations');
+        $this->publishes([__DIR__ . "/../config/$configName.php" => config_path("$configName.php")], "$publishName-config");
+        $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], "$publishName-migrations");
     }
 }
