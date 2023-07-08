@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace TheBachtiarz\UserStatus\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
 use TheBachtiarz\Base\App\Models\AbstractModel;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Traits\Model\UserStatusMapTrait;
 use TheBachtiarz\UserStatus\Traits\Model\UserStatusScopeTrait;

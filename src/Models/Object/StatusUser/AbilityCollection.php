@@ -18,7 +18,6 @@ class AbilityCollection
     public function __construct(
         protected LogLibrary $logLibrary,
     ) {
-        $this->logLibrary = $logLibrary;
     }
 
     // ? Public Methods

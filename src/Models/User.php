@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Models;
 
-use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
-use TheBachtiarz\Auth\Models\User as TheBachtiarzAuthUserModel;
+use TheBachtiarz\Auth\Models\AuthUser as TheBachtiarzAuthUserModel;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserInterface;
 use TheBachtiarz\UserStatus\Traits\Model\UserStatusRelationTrait;
 
 class User extends TheBachtiarzAuthUserModel implements UserInterface

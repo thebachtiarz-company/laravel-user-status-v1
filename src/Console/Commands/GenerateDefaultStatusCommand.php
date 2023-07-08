@@ -4,31 +4,16 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Console\Commands;
 
-use Exception;
-use Illuminate\Console\Command;
+use TheBachtiarz\Base\App\Console\Commands\AbstractCommand;
 use TheBachtiarz\Base\App\Libraries\Log\LogLibrary;
+use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Models\Data\StatusUserData;
 use TheBachtiarz\UserStatus\Services\StatusUserService;
-use Throwable;
 
 use function tbuserstatusconfig;
 
-class GenerateDefaultStatusCommand extends Command
+class GenerateDefaultStatusCommand extends AbstractCommand
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'thebachtiarz:userstatus:generate:default';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generate default user status entity.';
-
     /**
      * Constructor
      */
@@ -36,45 +21,25 @@ class GenerateDefaultStatusCommand extends Command
         protected LogLibrary $logLibrary,
         protected StatusUserService $statusUserService,
     ) {
-        parent::__construct();
+        $this->signature    = 'thebachtiarz:userstatus:generate:default';
+        $this->commandTitle = 'Generate Default User Status';
+        $this->description  = 'Generate default user status entity.';
 
-        $this->logLibrary        = $logLibrary;
-        $this->statusUserService = $statusUserService;
+        parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(): int
+    public function commandProcess(): bool
     {
-        $result = Command::INVALID;
+        $statusUserData = (new StatusUserData())
+            ->setCode(tbuserstatusconfig(UserStatusConfigInterface::DEFAULT_STATUS_CODE, false))
+            ->setName('Default')
+            ->setAbilities(['guest' => ['*']]);
 
-        try {
-            $this->logLibrary->log('======> Generate default status user entity, started...');
-            $this->info('======> Generate default status user entity, started');
+        $create = $this->statusUserService->createOrUpdate(
+            statusUserDataInterface: $statusUserData,
+            useProposedCode: true,
+        );
 
-            $data   = (new StatusUserData())
-                ->setCode(tbuserstatusconfig('default_status_code', false))
-                ->setName('Default')
-                ->setAbilities(['guest' => ['*']]);
-            $create = $this->statusUserService->createOrUpdate($data, true);
-            if (! $create['status']) {
-                throw new Exception('Failed to create default status user');
-            }
-
-            $this->logLibrary->log('======> Generate default status user entity, finished...');
-            $this->info('======> Generate default status user entity, finished...');
-
-            $result = Command::SUCCESS;
-        } catch (Throwable $th) {
-            $this->logLibrary->log($th);
-            $this->warn('======> ' . $th->getMessage());
-
-            $result = Command::FAILURE;
-        } finally {
-            $this->logLibrary->log('');
-
-            return $result;
-        }
+        return $create['status'];
     }
 }

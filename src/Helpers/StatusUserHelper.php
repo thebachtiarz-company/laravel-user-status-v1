@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Helpers;
 
-use Illuminate\Support\Str;
+use TheBachtiarz\Base\App\Helpers\StringHelper;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 
 class StatusUserHelper
@@ -14,14 +14,13 @@ class StatusUserHelper
     /**
      * Generate new code
      */
-    public function generateNewCode(): string
+    public function generateNewCode(int $codeLength = 7): string
     {
         $randomString = '';
 
         do {
-            $randomString = Str::random(7);
-            $isExist      = StatusUser::getByCode($randomString);
-        } while (! $isExist);
+            $randomString = StringHelper::shuffleBoth($codeLength);
+        } while (! ! StatusUser::getByCode($randomString)->first());
 
         return $randomString;
     }

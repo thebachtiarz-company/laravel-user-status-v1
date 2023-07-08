@@ -7,9 +7,9 @@ namespace TheBachtiarz\UserStatus\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
 use TheBachtiarz\Base\App\Repositories\AbstractRepository;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 

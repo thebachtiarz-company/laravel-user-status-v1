@@ -6,69 +6,84 @@ namespace TheBachtiarz\UserStatus\Services;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
-use TheBachtiarz\Auth\Interfaces\Config\AuthConfigInterface;
-use TheBachtiarz\Auth\Interfaces\Model\Data\UserCreateDataInterface;
-use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
-use TheBachtiarz\Auth\Services\UserService as TbAuthUserService;
-use TheBachtiarz\Base\App\Services\AbstractService;
+use TheBachtiarz\Auth\Services\AuthUserService;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 use Throwable;
 
-use function array_merge;
 use function sprintf;
-use function tbauthconfig;
+use function tbstatususerget;
 
-class UserService extends AbstractService
+class UserService extends AuthUserService
 {
+    /**
+     * Status User Code
+     */
+    protected string|null $statusUserCode = null;
+
     /**
      * Constructor
      */
     public function __construct(
-        protected TbAuthUserService $tbAuthUserService,
         protected StatusUserService $statusUserService,
     ) {
-        $this->tbAuthUserService = $tbAuthUserService;
-        $this->statusUserService = $statusUserService;
+        if ($this->getStatusUserCode()) {
+            return;
+        }
+
+        $this->setStatusUserCode(tbstatususerget()?->getCode());
     }
 
     // ? Public Methods
 
     /**
-     * Create new user with status user role applied
+     * {@inheritDoc}
+     *
+     * Assign status user after create user success.
+     *
+     * @param string $identifier
+     * @param string $password
      *
      * @return array
      */
-    public function createNewUserWithStatus(UserCreateDataInterface $userCreateDataInterface, string $statusUserCode): array
+    public function createNewUser(string $identifier, string $password): array
     {
         try {
+            if (! $this->getStatusUserCode()) {
+                throw new Exception('Status user required');
+            }
+
             DB::beginTransaction();
 
-            $result = $this->tbAuthUserService->createNewUser($userCreateDataInterface);
+            $create = parent::createNewUser(identifier: $identifier, password: $password);
 
-            $userIdentifier = '';
+            if (! $create['status']) {
+                DB::rollBack();
 
-            switch (tbauthconfig(AuthConfigInterface::IDENTITY_METHOD, false)) {
-                case UserInterface::ATTRIBUTE_EMAIL:
-                    $userIdentifier = $result[UserInterface::ATTRIBUTE_EMAIL];
-                    break;
-                case UserInterface::ATTRIBUTE_USERNAME:
-                    $userIdentifier = $result[UserInterface::ATTRIBUTE_USERNAME];
-                    break;
-                default:
-                    break;
+                return $create;
             }
 
-            $process = $this->statusUserService->hideResponseResult()->createUserStatus($userIdentifier, $statusUserCode);
-            if (! $process['status']) {
-                throw new Exception(sprintf("Failed to apply status for user '%s' with code '%s'", $userIdentifier, $statusUserCode));
-            }
+            $createData = $create['data'];
 
-            $result = array_merge($result, ['status' => $process['data'][StatusUserInterface::ATTRIBUTE_NAME]]);
+            $assignUserStatus = $this->statusUserService->hideResponseResult()->createUserStatus(
+                userIdentifier: $identifier,
+                statusCode: $this->getStatusUserCode(),
+            );
+
+            if (! $assignUserStatus['status']) {
+                throw new Exception(sprintf(
+                    "Failed to apply status for user '%s' with code '%s'",
+                    $identifier,
+                    $this->getStatusUserCode(),
+                ));
+            }
 
             DB::commit();
-            $this->setResponseData(message: 'Successfully create new user with status', data: $result);
 
-            return $result;
+            $createData['status'] = $assignUserStatus['data'][StatusUserInterface::ATTRIBUTE_NAME];
+
+            $this->setResponseData(message: $create['message'] . ' with status user', data: $createData, httpCode: 201);
+
+            return $this->serviceResult(status: true, message: $create['message'] . ' with status user', data: $createData);
         } catch (Throwable $th) {
             DB::rollBack();
             $this->log($th);
@@ -84,5 +99,23 @@ class UserService extends AbstractService
 
     // ? Getter Modules
 
+    /**
+     * Get status user code
+     */
+    public function getStatusUserCode(): string|null
+    {
+        return $this->statusUserCode;
+    }
+
     // ? Setter Modules
+
+    /**
+     * Set status user code
+     */
+    public function setStatusUserCode(string|null $statusUserCode = null): self
+    {
+        $this->statusUserCode = $statusUserCode;
+
+        return $this;
+    }
 }

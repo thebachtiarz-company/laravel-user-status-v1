@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Services;
 
-use TheBachtiarz\Auth\Interfaces\Model\UserInterface;
-use TheBachtiarz\Auth\Repositories\UserRepository;
+use TheBachtiarz\Auth\Repositories\AuthUserRepository;
 use TheBachtiarz\Base\App\Services\AbstractService;
 use TheBachtiarz\UserStatus\Helpers\StatusUserHelper;
 use TheBachtiarz\UserStatus\Interfaces\Model\Data\StatusUserDataInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Model\UserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\Object\StatusUser\AbilityObject;
 use TheBachtiarz\UserStatus\Models\StatusUser;
@@ -27,17 +27,12 @@ class StatusUserService extends AbstractService
      * Constructor
      */
     public function __construct(
-        protected UserRepository $userRepository,
+        protected AuthUserRepository $authUserRepository,
         protected StatusUserRepository $statusUserRepository,
         protected UserStatusRepository $userStatusRepository,
         protected AbilityObject $abilityObject,
         protected StatusUserHelper $statusUserHelper,
     ) {
-        $this->userRepository       = $userRepository;
-        $this->statusUserRepository = $statusUserRepository;
-        $this->userStatusRepository = $userStatusRepository;
-        $this->abilityObject        = $abilityObject;
-        $this->statusUserHelper     = $statusUserHelper;
     }
 
     // ? Public Methods
@@ -90,15 +85,17 @@ class StatusUserService extends AbstractService
             $action = 'create';
 
             END_PROCESS:
-            $result = $this->statusUserRepository->getByCode($statusUserDataInterface->getCode());
-            assert($result instanceof StatusUser);
+            $getProcess = $this->statusUserRepository->getByCode($statusUserDataInterface->getCode());
+            assert($getProcess instanceof StatusUser);
 
-            $this->setResponseData(message: sprintf('Successfully %s status user', $action), data: $result?->simpleListMap());
+            $result = $getProcess->simpleListMap();
+
+            $this->setResponseData(message: sprintf('Successfully %s status user', $action), data: $result);
 
             return $this->serviceResult(
                 status: true,
                 message: sprintf('Successfully %s status user', $action),
-                data: $result?->simpleListMap(),
+                data: $result,
             );
         } catch (Throwable $th) {
             $this->log($th);
@@ -116,7 +113,7 @@ class StatusUserService extends AbstractService
     public function createUserStatus(string $userIdentifier, string $statusCode): array
     {
         try {
-            $user = $this->userRepository->getByIdentifier($userIdentifier);
+            $user = $this->authUserRepository->getByIdentifier($userIdentifier);
             assert($user instanceof UserInterface);
 
             $statusUser = $this->statusUserRepository->getByCode($statusCode);
@@ -130,9 +127,11 @@ class StatusUserService extends AbstractService
             $create = $this->userStatusRepository->create($userStatusPrepare);
             assert($create instanceof UserStatus);
 
-            $this->setResponseData(message: 'Successfully create new user status', data: $create?->simpleListMap());
+            $result = $create->simpleListMap();
 
-            return $this->serviceResult(status: true, message: 'Successfully create new user status', data: $create?->simpleListMap());
+            $this->setResponseData(message: 'Successfully create new user status', data: $result, httpCode: 201);
+
+            return $this->serviceResult(status: true, message: 'Successfully create new user status', data: $result);
         } catch (Throwable $th) {
             $this->log($th);
             $this->setResponseData(message: 'Failed to create new user status', status: 'error', httpCode: 202);
