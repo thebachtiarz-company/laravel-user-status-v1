@@ -6,6 +6,8 @@ namespace TheBachtiarz\UserStatus\Services;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
+use TheBachtiarz\Auth\Repositories\AuthUserRepository;
+use TheBachtiarz\Auth\Repositories\PersonalAccessTokenRepository;
 use TheBachtiarz\Auth\Services\AuthUserService;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
 use Throwable;
@@ -24,13 +26,14 @@ class UserService extends AuthUserService
      * Constructor
      */
     public function __construct(
+        protected AuthUserRepository $authUserRepository,
+        protected PersonalAccessTokenRepository $personalAccessTokenRepository,
         protected StatusUserService $statusUserService,
     ) {
-        if ($this->getStatusUserCode()) {
-            return;
-        }
-
-        $this->setStatusUserCode(tbstatususerget()?->getCode());
+        parent::__construct(
+            authUserRepository: $authUserRepository,
+            personalAccessTokenRepository: $personalAccessTokenRepository,
+        );
     }
 
     // ? Public Methods
@@ -48,10 +51,6 @@ class UserService extends AuthUserService
     public function createNewUser(string $identifier, string $password): array
     {
         try {
-            if (! $this->getStatusUserCode()) {
-                throw new Exception('Status user required');
-            }
-
             DB::beginTransaction();
 
             $create = parent::createNewUser(identifier: $identifier, password: $password);
@@ -64,7 +63,7 @@ class UserService extends AuthUserService
 
             $createData = $create['data'];
 
-            $assignUserStatus = $this->statusUserService->hideResponseResult()->createUserStatus(
+            $assignUserStatus = $this->statusUserService->hideResponseResult()->createOrUpdateUserStatus(
                 userIdentifier: $identifier,
                 statusCode: $this->getStatusUserCode(),
             );
@@ -79,7 +78,7 @@ class UserService extends AuthUserService
 
             DB::commit();
 
-            $createData['status'] = $assignUserStatus['data'][StatusUserInterface::ATTRIBUTE_NAME];
+            $createData['status'] = $assignUserStatus['data']['status'][StatusUserInterface::ATTRIBUTE_NAME];
 
             $this->setResponseData(message: $create['message'] . ' with status user', data: $createData, httpCode: 201);
 
@@ -104,7 +103,7 @@ class UserService extends AuthUserService
      */
     public function getStatusUserCode(): string|null
     {
-        return $this->statusUserCode;
+        return $this->statusUserCode ?? tbstatususerget()->getCode();
     }
 
     // ? Setter Modules
@@ -114,7 +113,7 @@ class UserService extends AuthUserService
      */
     public function setStatusUserCode(string|null $statusUserCode = null): self
     {
-        $this->statusUserCode = $statusUserCode;
+        $this->statusUserCode = tbstatususerget($statusUserCode)->getCode();
 
         return $this;
     }

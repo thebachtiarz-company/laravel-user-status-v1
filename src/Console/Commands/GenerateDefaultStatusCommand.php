@@ -8,6 +8,7 @@ use TheBachtiarz\Base\App\Console\Commands\AbstractCommand;
 use TheBachtiarz\Base\App\Libraries\Log\LogLibrary;
 use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Models\Data\StatusUserData;
+use TheBachtiarz\UserStatus\Models\Object\Entity\StatusUserAbilityEntity;
 use TheBachtiarz\UserStatus\Services\StatusUserService;
 
 use function tbuserstatusconfig;
@@ -32,8 +33,8 @@ class GenerateDefaultStatusCommand extends AbstractCommand
     {
         $statusUserData = (new StatusUserData())
             ->setCode(tbuserstatusconfig(UserStatusConfigInterface::DEFAULT_STATUS_CODE, false))
-            ->setName('Default')
-            ->setAbilities(['guest' => ['*']]);
+            ->setName('Guest')
+            ->setAbilities((new StatusUserAbilityEntity('guest'))->toArray());
 
         $create = $this->statusUserService->createOrUpdate(
             statusUserDataInterface: $statusUserData,

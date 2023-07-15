@@ -8,6 +8,7 @@ use TheBachtiarz\Base\BaseConfigInterface;
 use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
 
 use function array_merge;
+use function config;
 use function tbbaseconfig;
 
 class DataProvider
@@ -22,7 +23,16 @@ class DataProvider
     {
         $registerConfig = [];
 
-        // ! user status
+        // ! Providers
+        $_providers       = config('app.providers');
+        $registerConfig[] = [
+            'app.providers' => array_merge(
+                $_providers,
+                [StatusRouteServiceProvider::class],
+            ),
+        ];
+
+        // ! library configs
         $configRegistered = tbbaseconfig(BaseConfigInterface::CONFIG_REGISTERED);
         $registerConfig[] = [
             BaseConfigInterface::CONFIG_NAME . '.' . BaseConfigInterface::CONFIG_REGISTERED => array_merge(

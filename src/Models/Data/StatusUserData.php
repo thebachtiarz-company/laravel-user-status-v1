@@ -35,21 +35,24 @@ class StatusUserData implements StatusUserDataInterface
 
     // ? Private Methods
 
+    // ? Getter Modules
 
     public function getCode(): string|null
     {
-        return $this->data[self::ATTRIBUTE_CODE];
+        return @$this->data[self::ATTRIBUTE_CODE];
     }
 
     public function getName(): string|null
     {
-        return $this->data[self::ATTRIBUTE_NAME];
+        return @$this->data[self::ATTRIBUTE_NAME];
     }
 
     public function getAbilities(): array|null
     {
-        return $this->data[self::ATTRIBUTE_ABILITIES];
+        return @$this->data[self::ATTRIBUTE_ABILITIES];
     }
+
+    // ? Setter Modules
 
     public function setCode(string $code): self
     {

@@ -18,7 +18,7 @@ class AbilityObject
      */
     public function encode(array $ability): string
     {
-        return json_encode($ability);
+        return json_encode(value: $ability);
     }
 
     /**
@@ -28,6 +28,6 @@ class AbilityObject
      */
     public function decode(string $ability): array
     {
-        return json_decode($ability, true);
+        return json_decode(json: $ability, associative: true);
     }
 }

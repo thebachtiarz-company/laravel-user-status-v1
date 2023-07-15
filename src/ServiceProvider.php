@@ -22,6 +22,8 @@ class ServiceProvider extends LaravelServiceProvider
 
         $appsProvider->registerConfig();
 
+        $this->commands(AppsProvider::COMMANDS_OPEN);
+
         if (! $this->app->runningInConsole()) {
             return;
         }

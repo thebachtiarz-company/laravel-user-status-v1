@@ -21,7 +21,7 @@ interface UserStatusInterface extends AbstractModelInterface
         self::ATTRIBUTE_STATUSUSERID,
     ];
 
-    public const ATTRIBUTE_USERID       = 'user_id';
+    public const ATTRIBUTE_USERID       = 'auth_user_id';
     public const ATTRIBUTE_STATUSUSERID = 'status_user_id';
 
     // ? Getter Modules

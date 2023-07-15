@@ -7,9 +7,9 @@ namespace TheBachtiarz\UserStatus\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use TheBachtiarz\Auth\Models\AbstractAuthUser;
 use TheBachtiarz\Base\App\Repositories\AbstractRepository;
 use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 
@@ -22,9 +22,9 @@ class UserStatusRepository extends AbstractRepository
     /**
      * Get user status by user
      */
-    public function getByUser(UserInterface $userInterface): UserStatusInterface
+    public function getByUser(AbstractAuthUser $abstractAuthUser): UserStatusInterface
     {
-        $userStatus = UserStatus::getByUser($userInterface)->first();
+        $userStatus = UserStatus::getByUser($abstractAuthUser)->first();
 
         if (! $userStatus) {
             throw new ModelNotFoundException('Cannot find user status for current user');
@@ -83,9 +83,9 @@ class UserStatusRepository extends AbstractRepository
     /**
      * Delete user status by user
      */
-    public function deleteByUser(UserInterface $userInterface): bool
+    public function deleteByUser(AbstractAuthUser $abstractAuthUser): bool
     {
-        $userStatus = $this->getByUser($userInterface);
+        $userStatus = $this->getByUser($abstractAuthUser);
         assert($userStatus instanceof Model);
 
         return $userStatus->delete();

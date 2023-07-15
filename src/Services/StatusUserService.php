@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Services;
 
+use TheBachtiarz\Auth\Models\AbstractAuthUser;
 use TheBachtiarz\Auth\Repositories\AuthUserRepository;
 use TheBachtiarz\Base\App\Services\AbstractService;
 use TheBachtiarz\UserStatus\Helpers\StatusUserHelper;
@@ -20,6 +21,7 @@ use Throwable;
 
 use function assert;
 use function sprintf;
+use function tbstatusauthorizationgate;
 
 class StatusUserService extends AbstractService
 {
@@ -46,12 +48,14 @@ class StatusUserService extends AbstractService
         StatusUserDataInterface $statusUserDataInterface,
         bool $useProposedCode = false,
     ): array {
-        $action = '';
+        $action = 'create';
 
         try {
+            tbstatusauthorizationgate(allowedActions: ['status-user:create', 'status-user:update']);
+
             if ($statusUserDataInterface->getCode()) {
                 $statusUser = StatusUser::getByCode($statusUserDataInterface->getCode())->first();
-                assert($statusUser instanceof StatusUserInterface);
+                assert($statusUser instanceof StatusUserInterface || $statusUser === null);
 
                 if (! $statusUser) {
                     goto CREATE_PROCESS;
@@ -90,7 +94,7 @@ class StatusUserService extends AbstractService
 
             $result = $getProcess->simpleListMap();
 
-            $this->setResponseData(message: sprintf('Successfully %s status user', $action), data: $result);
+            $this->setResponseData(message: sprintf('Successfully %s status user', $action), data: $result, httpCode: 201);
 
             return $this->serviceResult(
                 status: true,
@@ -99,44 +103,66 @@ class StatusUserService extends AbstractService
             );
         } catch (Throwable $th) {
             $this->log($th);
-            $this->setResponseData(message: sprintf('Failed to %s status user', $action), status: 'error', httpCode: 202);
+            $this->setResponseData(message: $th->getMessage(), status: 'error', httpCode: 202);
 
             return $this->serviceResult(message: sprintf('Failed to %s status user', $action));
         }
     }
 
     /**
-     * Create user status by user identifier
+     * Create or update user status by user identifier
      *
      * @return array
      */
-    public function createUserStatus(string $userIdentifier, string $statusCode): array
+    public function createOrUpdateUserStatus(string $userIdentifier, string $statusCode): array
     {
         try {
+            tbstatusauthorizationgate(allowedActions: ['user-status:create', 'user-status:update']);
+
             $user = $this->authUserRepository->getByIdentifier($userIdentifier);
-            assert($user instanceof UserInterface);
+            assert($user instanceof UserInterface || $user instanceof AbstractAuthUser);
 
             $statusUser = $this->statusUserRepository->getByCode($statusCode);
             assert($statusUser instanceof StatusUserInterface);
 
-            $userStatusPrepare = (new UserStatus())
-                ->setUserId($user->getId())
-                ->setStatusUserId($statusUser->getId());
-            assert($userStatusPrepare instanceof UserStatusInterface);
+            $userStatusEntity = UserStatus::getByUser($user)->first();
+            assert($userStatusEntity instanceof UserStatusInterface);
 
-            $create = $this->userStatusRepository->create($userStatusPrepare);
-            assert($create instanceof UserStatus);
+            if ($userStatusEntity) {
+                $userStatusEntity->setStatusUserId($statusUser->getId());
 
-            $result = $create->simpleListMap();
+                $save = $this->userStatusRepository->save($userStatusEntity);
+                assert($save instanceof UserStatus);
 
-            $this->setResponseData(message: 'Successfully create new user status', data: $result, httpCode: 201);
+                $result = $save->simpleListMap();
+            } else {
+                $userStatusPrepare = (new UserStatus())
+                    ->setUserId($user->getId())
+                    ->setStatusUserId($statusUser->getId());
+                assert($userStatusPrepare instanceof UserStatusInterface);
 
-            return $this->serviceResult(status: true, message: 'Successfully create new user status', data: $result);
+                $create = $this->userStatusRepository->create($userStatusPrepare);
+                assert($create instanceof UserStatus);
+
+                $result = $create->simpleListMap();
+            }
+
+            $this->setResponseData(
+                message: sprintf('Successfully set user status to %s', $statusUser->getName()),
+                data: $result,
+                httpCode: 201,
+            );
+
+            return $this->serviceResult(
+                status: true,
+                message: sprintf('Successfully set user status to %s', $statusUser->getName()),
+                data: $result,
+            );
         } catch (Throwable $th) {
             $this->log($th);
-            $this->setResponseData(message: 'Failed to create new user status', status: 'error', httpCode: 202);
+            $this->setResponseData(message: $th->getMessage(), status: 'error', httpCode: 202);
 
-            return $this->serviceResult(message: 'Failed to create user status');
+            return $this->serviceResult(message: $th->getMessage());
         }
     }
 
