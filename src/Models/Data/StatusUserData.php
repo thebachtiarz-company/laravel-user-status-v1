@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Models\Data;
 
-use TheBachtiarz\UserStatus\Interfaces\Model\Data\StatusUserDataInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\Data\StatusUserDataInterface;
 
 use function in_array;
 

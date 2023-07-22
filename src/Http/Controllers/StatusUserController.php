@@ -6,12 +6,12 @@ namespace TheBachtiarz\UserStatus\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use TheBachtiarz\Auth\Http\Requests\Rules\IdentifierRule;
-use TheBachtiarz\Base\App\Controllers\AbstractController;
+use TheBachtiarz\Base\App\Http\Controllers\AbstractController;
 use TheBachtiarz\UserStatus\Http\Requests\API\StatusUserCreateRequest;
 use TheBachtiarz\UserStatus\Http\Requests\API\UserStatusAssignRequest;
 use TheBachtiarz\UserStatus\Http\Requests\Rules\StatusUserCodeRule;
 use TheBachtiarz\UserStatus\Http\Requests\Rules\StatusUserCreateRule;
-use TheBachtiarz\UserStatus\Interfaces\Model\Data\StatusUserDataInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\Data\StatusUserDataInterface;
 use TheBachtiarz\UserStatus\Models\Data\StatusUserData;
 use TheBachtiarz\UserStatus\Models\Object\Entity\StatusUserAbilityEntity;
 use TheBachtiarz\UserStatus\Services\StatusUserService;

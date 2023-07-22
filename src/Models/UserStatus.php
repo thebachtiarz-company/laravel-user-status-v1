@@ -6,30 +6,50 @@ namespace TheBachtiarz\UserStatus\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TheBachtiarz\Base\App\Models\AbstractModel;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
-use TheBachtiarz\UserStatus\Traits\Model\UserStatusMapTrait;
-use TheBachtiarz\UserStatus\Traits\Model\UserStatusScopeTrait;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
+use TheBachtiarz\UserStatus\Traits\Models\UserStatusMapTrait;
+use TheBachtiarz\UserStatus\Traits\Models\UserStatusScopeTrait;
 
 class UserStatus extends AbstractModel implements UserStatusInterface
 {
     use UserStatusScopeTrait;
     use UserStatusMapTrait;
 
-    protected $table = self::TABLE_NAME;
+    /**
+     * Constructor
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->setTable(self::TABLE_NAME);
+        $this->fillable(self::ATTRIBUTE_FILLABLE);
 
-    protected $fillable = self::ATTRIBUTES_FILLABLE;
+        parent::__construct($attributes);
+    }
 
+    // ? Getter Modules
+
+    /**
+     * Get user id
+     */
     public function getUserId(): int|null
     {
         return $this->__get(self::ATTRIBUTE_USERID);
     }
 
+    /**
+     * Get status user id
+     */
     public function getStatusUserId(): int|null
     {
         return $this->__get(self::ATTRIBUTE_STATUSUSERID);
     }
 
+    // ? Setter Modules
+
+    /**
+     * Set user id
+     */
     public function setUserId(int $userId): self
     {
         $this->__set(self::ATTRIBUTE_USERID, $userId);
@@ -37,6 +57,9 @@ class UserStatus extends AbstractModel implements UserStatusInterface
         return $this;
     }
 
+    /**
+     * Set status user id
+     */
     public function setStatusUserId(int $statusUserId): self
     {
         $this->__set(self::ATTRIBUTE_STATUSUSERID, $statusUserId);
@@ -60,9 +83,9 @@ class UserStatus extends AbstractModel implements UserStatusInterface
     public function statususer(): BelongsTo
     {
         return $this->belongsTo(
-            StatusUser::class,
-            self::ATTRIBUTE_STATUSUSERID,
-            UserInterface::ATTRIBUTE_ID,
+            related: StatusUser::class,
+            foreignKey: self::ATTRIBUTE_STATUSUSERID,
+            ownerKey: UserInterface::ATTRIBUTE_ID,
         );
     }
 }

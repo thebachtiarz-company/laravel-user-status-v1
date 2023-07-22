@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TheBachtiarz\UserStatus\Interfaces\Model\Data;
+namespace TheBachtiarz\UserStatus\Interfaces\Models\Data;
 
 interface StatusUserDataInterface
 {

@@ -9,24 +9,37 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use TheBachtiarz\Auth\Models\AbstractAuthUser;
 use TheBachtiarz\Base\App\Repositories\AbstractRepository;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 
+use function app;
 use function assert;
 
 class UserStatusRepository extends AbstractRepository
 {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->modelEntity = app(UserStatus::class);
+
+        parent::__construct();
+    }
+
     // ? Public Methods
 
     /**
      * Get user status by user
      */
-    public function getByUser(AbstractAuthUser $abstractAuthUser): UserStatusInterface
+    public function getByUser(AbstractAuthUser $abstractAuthUser): UserStatusInterface|null
     {
-        $userStatus = UserStatus::getByUser($abstractAuthUser)->first();
+        $this->modelBuilder(modelBuilder: UserStatus::getByUser($abstractAuthUser));
 
-        if (! $userStatus) {
+        $userStatus = $this->modelBuilder()->first();
+
+        if (! $userStatus && $this->throwIfNullEntity()) {
             throw new ModelNotFoundException('Cannot find user status for current user');
         }
 
@@ -40,13 +53,13 @@ class UserStatusRepository extends AbstractRepository
      */
     public function getByStatusUser(StatusUserInterface $statusUserInterface): Collection
     {
-        $collection = UserStatus::getByStatusUser($statusUserInterface);
+        $this->modelBuilder(modelBuilder: UserStatus::getByStatusUser($statusUserInterface));
 
-        if (! $collection->count()) {
+        if (! $this->modelBuilder()->count() && $this->throwIfNullEntity()) {
             throw new ModelNotFoundException('Cannot find user status for current status');
         }
 
-        return $collection->get();
+        return $this->modelBuilder()->get();
     }
 
     /**
@@ -86,9 +99,25 @@ class UserStatusRepository extends AbstractRepository
     public function deleteByUser(AbstractAuthUser $abstractAuthUser): bool
     {
         $userStatus = $this->getByUser($abstractAuthUser);
-        assert($userStatus instanceof Model);
+        assert($userStatus instanceof Model || $userStatus === null);
+
+        if (! $userStatus) {
+            throw new ModelNotFoundException('Failed to delete user status');
+        }
 
         return $userStatus->delete();
+    }
+
+    // ? Protected Methods
+
+    protected function getByIdErrorMessage(): string|null
+    {
+        return "User status with id '%s' not found!";
+    }
+
+    protected function createOrUpdateErrorMessage(): string|null
+    {
+        return 'Failed to %s user status';
     }
 
     // ? Private Methods

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use TheBachtiarz\Auth\Repositories\AuthUserRepository;
 use TheBachtiarz\Auth\Repositories\PersonalAccessTokenRepository;
 use TheBachtiarz\Auth\Services\AuthUserService;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
 use Throwable;
 
 use function sprintf;

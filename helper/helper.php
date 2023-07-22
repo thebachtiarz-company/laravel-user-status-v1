@@ -5,8 +5,8 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Artisan;
 use TheBachtiarz\Base\Config\Helpers\ConfigPoolHelper;
 use TheBachtiarz\UserStatus\Gates\AuthorizationGate;
-use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Configs\UserStatusConfigInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
 use TheBachtiarz\UserStatus\Repositories\StatusUserRepository;
 
 if (! function_exists('tbuserstatusconfig')) {

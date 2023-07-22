@@ -7,10 +7,10 @@ namespace TheBachtiarz\UserStatus\Models;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TheBachtiarz\Base\App\Models\AbstractModel;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
-use TheBachtiarz\UserStatus\Traits\Model\StatusUserMapTrait;
-use TheBachtiarz\UserStatus\Traits\Model\StatusUserScopeTrait;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
+use TheBachtiarz\UserStatus\Traits\Models\StatusUserMapTrait;
+use TheBachtiarz\UserStatus\Traits\Models\StatusUserScopeTrait;
 
 class StatusUser extends AbstractModel implements StatusUserInterface
 {
@@ -18,25 +18,48 @@ class StatusUser extends AbstractModel implements StatusUserInterface
     use StatusUserScopeTrait;
     use StatusUserMapTrait;
 
-    protected $table = self::TABLE_NAME;
+    /**
+     * Constructor
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->setTable(self::TABLE_NAME);
+        $this->fillable(self::ATTRIBUTE_FILLABLE);
 
-    protected $fillable = self::ATTRIBUTES_FILLABLE;
+        parent::__construct($attributes);
+    }
 
+    // ? Getter Modules
+
+    /**
+     * Get name
+     */
     public function getName(): string|null
     {
         return $this->__get(self::ATTRIBUTE_NAME);
     }
 
+    /**
+     * Get code
+     */
     public function getCode(): string|null
     {
         return $this->__get(self::ATTRIBUTE_CODE);
     }
 
+    /**
+     * Get abilities
+     */
     public function getAbilities(): string|null
     {
         return $this->__get(self::ATTRIBUTE_ABILITIES);
     }
 
+    // ? Setter Modules
+
+    /**
+     * Set name
+     */
     public function setName(string $name): self
     {
         $this->__set(self::ATTRIBUTE_NAME, $name);
@@ -44,6 +67,9 @@ class StatusUser extends AbstractModel implements StatusUserInterface
         return $this;
     }
 
+    /**
+     * Set code
+     */
     public function setCode(string $code): self
     {
         $this->__set(self::ATTRIBUTE_CODE, $code);
@@ -51,6 +77,9 @@ class StatusUser extends AbstractModel implements StatusUserInterface
         return $this;
     }
 
+    /**
+     * Set abilities
+     */
     public function setAbilities(string $abilities): self
     {
         $this->__set(self::ATTRIBUTE_ABILITIES, $abilities);
@@ -65,6 +94,10 @@ class StatusUser extends AbstractModel implements StatusUserInterface
      */
     public function userstatuses(): HasMany
     {
-        return $this->hasMany(UserStatus::class, UserStatusInterface::ATTRIBUTE_STATUSUSERID);
+        return $this->hasMany(
+            related: UserStatus::class,
+            foreignKey: UserStatusInterface::ATTRIBUTE_STATUSUSERID,
+            localKey: self::ATTRIBUTE_ID,
+        );
     }
 }

@@ -7,37 +7,36 @@ namespace TheBachtiarz\UserStatus\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use TheBachtiarz\Base\App\Repositories\AbstractRepository;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 
+use function app;
 use function assert;
 
 class StatusUserRepository extends AbstractRepository
 {
-    // ? Public Methods
-
     /**
-     * Get status by id
+     * Constructor
      */
-    public function getById(int $id): StatusUserInterface
+    public function __construct()
     {
-        $statusUser = StatusUser::find($id);
+        $this->modelEntity = app(StatusUser::class);
 
-        if (! $statusUser) {
-            throw new ModelNotFoundException("Status with id '$id' not found");
-        }
-
-        return $statusUser;
+        parent::__construct();
     }
+
+    // ? Public Methods
 
     /**
      * Get status by code
      */
-    public function getByCode(string $code): StatusUserInterface
+    public function getByCode(string $code): StatusUserInterface|null
     {
-        $statusUser = StatusUser::getByCode($code)->first();
+        $this->modelBuilder(modelBuilder: StatusUser::getByCode($code));
 
-        if (! $statusUser) {
+        $statusUser = $this->modelBuilder()->first();
+
+        if (! $statusUser && $this->throwIfNullEntity()) {
             throw new ModelNotFoundException("Status with code '$code' not found");
         }
 
@@ -49,7 +48,6 @@ class StatusUserRepository extends AbstractRepository
      */
     public function create(StatusUserInterface $statusUserInterface): StatusUserInterface
     {
-        /** @var Model $statusUserInterface */
         $create = $this->createFromModel($statusUserInterface);
         assert($create instanceof StatusUserInterface);
 
@@ -76,24 +74,29 @@ class StatusUserRepository extends AbstractRepository
     }
 
     /**
-     * Delete by id
-     */
-    public function deleteById(int $id): bool
-    {
-        $statusUser = $this->getById($id);
-        assert($statusUser instanceof Model);
-
-        return $statusUser->delete();
-    }
-
-    /**
      * Delete status by code
      */
     public function deleteByCode(string $code): bool
     {
         $statusUser = $this->getByCode($code);
 
+        if (! $statusUser) {
+            throw new ModelNotFoundException('Failed to delete status');
+        }
+
         return $this->deleteById($statusUser->getId());
+    }
+
+    // ? Protected Methods
+
+    protected function getByIdErrorMessage(): string|null
+    {
+        return "Status with id '%s' not found!";
+    }
+
+    protected function createOrUpdateErrorMessage(): string|null
+    {
+        return 'Failed to %s status';
     }
 
     // ? Private Methods

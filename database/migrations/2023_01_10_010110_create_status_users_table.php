@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 use TheBachtiarz\UserStatus\Models\User;
 

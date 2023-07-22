@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TheBachtiarz\UserStatus;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
+use TheBachtiarz\UserStatus\Interfaces\Configs\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Providers\AppsProvider;
 
 use function app;

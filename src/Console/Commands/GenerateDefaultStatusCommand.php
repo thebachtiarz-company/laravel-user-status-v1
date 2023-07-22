@@ -6,7 +6,7 @@ namespace TheBachtiarz\UserStatus\Console\Commands;
 
 use TheBachtiarz\Base\App\Console\Commands\AbstractCommand;
 use TheBachtiarz\Base\App\Libraries\Log\LogLibrary;
-use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
+use TheBachtiarz\UserStatus\Interfaces\Configs\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Models\Data\StatusUserData;
 use TheBachtiarz\UserStatus\Models\Object\Entity\StatusUserAbilityEntity;
 use TheBachtiarz\UserStatus\Services\StatusUserService;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TheBachtiarz\UserStatus\Http\Requests\Rules;
 
 use TheBachtiarz\Auth\Http\Requests\Rules\IdentifierRule;
-use TheBachtiarz\Base\App\Http\Requests\Rule\AbstractRule;
+use TheBachtiarz\Base\App\Http\Requests\Rules\AbstractRule;
 
 use function array_merge;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TheBachtiarz\UserStatus\Traits\Model;
+namespace TheBachtiarz\UserStatus\Traits\Models;
 
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 
 use function array_merge;
@@ -20,7 +20,7 @@ trait UserStatusMapTrait
      *
      * @return array
      */
-    public function simpleListMap(): array
+    public function simpleListMap(array $attributes = []): array
     {
         /** @var UserStatus $this */
 

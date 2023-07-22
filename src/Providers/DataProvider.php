@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace TheBachtiarz\UserStatus\Providers;
 
 use TheBachtiarz\Base\BaseConfigInterface;
-use TheBachtiarz\UserStatus\Interfaces\Config\UserStatusConfigInterface;
+use TheBachtiarz\UserStatus\Interfaces\Configs\UserStatusConfigInterface;
 
 use function array_merge;
 use function config;

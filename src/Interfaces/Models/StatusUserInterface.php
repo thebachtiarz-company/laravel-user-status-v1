@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TheBachtiarz\UserStatus\Interfaces\Model;
+namespace TheBachtiarz\UserStatus\Interfaces\Models;
 
-use TheBachtiarz\Base\App\Interfaces\Model\AbstractModelInterface;
+use TheBachtiarz\Base\App\Interfaces\Models\AbstractModelInterface;
 
 interface StatusUserInterface extends AbstractModelInterface
 {
@@ -16,7 +16,7 @@ interface StatusUserInterface extends AbstractModelInterface
     /**
      * Model attributes
      */
-    public const ATTRIBUTES_FILLABLE = [
+    public const ATTRIBUTE_FILLABLE = [
         self::ATTRIBUTE_NAME,
         self::ATTRIBUTE_CODE,
         self::ATTRIBUTE_ABILITIES,
@@ -39,7 +39,7 @@ interface StatusUserInterface extends AbstractModelInterface
     public function getCode(): string|null;
 
     /**
-     * Get id
+     * Get abilities
      */
     public function getAbilities(): string|null;
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace TheBachtiarz\UserStatus\Traits\Model;
+namespace TheBachtiarz\UserStatus\Traits\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use TheBachtiarz\Auth\Models\AbstractAuthUser;
-use TheBachtiarz\UserStatus\Interfaces\Model\StatusUserInterface;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\StatusUser;
 
 /**

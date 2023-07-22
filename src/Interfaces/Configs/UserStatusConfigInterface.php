@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TheBachtiarz\UserStatus\Interfaces\Config;
+namespace TheBachtiarz\UserStatus\Interfaces\Configs;
 
 interface UserStatusConfigInterface
 {

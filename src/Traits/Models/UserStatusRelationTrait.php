@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace TheBachtiarz\UserStatus\Traits\Model;
+namespace TheBachtiarz\UserStatus\Traits\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use TheBachtiarz\UserStatus\Interfaces\Model\UserStatusInterface;
+use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
 use TheBachtiarz\UserStatus\Models\UserStatus;
 
 /**
