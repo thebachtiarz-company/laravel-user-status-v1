@@ -17,11 +17,21 @@ class StatusUserData implements StatusUserDataInterface
      */
     private array $data = [];
 
+    // ? Public Modules
+
+    /**
+     * Get data
+     *
+     * @param string|null $attribute Attribute name
+     */
     public function getData(string|null $attribute): mixed
     {
         return @$this->data[$attribute] ?? $this->data;
     }
 
+    /**
+     * Set data
+     */
     public function setData(string $attribute, mixed $value): self
     {
         if (in_array($attribute, self::ATTRIBUTES)) {
@@ -37,16 +47,25 @@ class StatusUserData implements StatusUserDataInterface
 
     // ? Getter Modules
 
+    /**
+     * Get code
+     */
     public function getCode(): string|null
     {
         return @$this->data[self::ATTRIBUTE_CODE];
     }
 
+    /**
+     * Get name
+     */
     public function getName(): string|null
     {
         return @$this->data[self::ATTRIBUTE_NAME];
     }
 
+    /**
+     * get abylities
+     */
     public function getAbilities(): array|null
     {
         return @$this->data[self::ATTRIBUTE_ABILITIES];
@@ -54,6 +73,9 @@ class StatusUserData implements StatusUserDataInterface
 
     // ? Setter Modules
 
+    /**
+     * Set code
+     */
     public function setCode(string $code): self
     {
         $this->data[self::ATTRIBUTE_CODE] = $code;
@@ -61,6 +83,9 @@ class StatusUserData implements StatusUserDataInterface
         return $this;
     }
 
+    /**
+     * Set name
+     */
     public function setName(string $name): self
     {
         $this->data[self::ATTRIBUTE_NAME] = $name;
@@ -68,6 +93,9 @@ class StatusUserData implements StatusUserDataInterface
         return $this;
     }
 
+    /**
+     * Set abilities
+     */
     public function setAbilities(array $abilities): self
     {
         $this->data[self::ATTRIBUTE_ABILITIES] = $abilities;

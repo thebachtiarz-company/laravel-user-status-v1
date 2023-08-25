@@ -20,6 +20,7 @@ use TheBachtiarz\UserStatus\Repositories\UserStatusRepository;
 use Throwable;
 
 use function assert;
+use function collect;
 use function sprintf;
 use function tbstatusauthorizationgate;
 
@@ -38,6 +39,69 @@ class StatusUserService extends AbstractService
     }
 
     // ? Public Methods
+
+    /**
+     * Get list of status
+     *
+     * @return array
+     */
+    public function getList(bool $withAbilities = false): array
+    {
+        try {
+            $collect = collect();
+
+            $statusEntities = StatusUser::all();
+
+            foreach ($statusEntities->all() as $key => $status) {
+                assert($status instanceof StatusUserInterface);
+                $current = collect($status->simpleListMap());
+
+                if (! $withAbilities) {
+                    $current->only([
+                        StatusUserInterface::ATTRIBUTE_NAME,
+                        StatusUserInterface::ATTRIBUTE_CODE,
+                    ]);
+                }
+
+                $collect->push($current->toArray());
+            }
+
+            $result = $collect->toArray();
+
+            $this->setResponseData(message: 'List of status(es)', data: $result);
+
+            return $this->serviceResult(status: true, message: 'List of status(es)', data: $result);
+        } catch (Throwable $th) {
+            $this->log($th);
+            $this->setResponseData(message: $th->getMessage(), status: 'error', httpCode: 202);
+
+            return $this->serviceResult(message: $th->getMessage());
+        }
+    }
+
+    /**
+     * Get status detail
+     *
+     * @return array
+     */
+    public function getStatusDetail(string $statusCode): array
+    {
+        try {
+            $status = $this->statusUserRepository->getByCode($statusCode);
+            assert($status instanceof StatusUserInterface);
+
+            $result = $status->simpleListMap();
+
+            $this->setResponseData(message: 'Status detail', data: $result);
+
+            return $this->serviceResult(status: true, message: 'Status detail', data: $result);
+        } catch (Throwable $th) {
+            $this->log($th);
+            $this->setResponseData(message: $th->getMessage(), status: 'error', httpCode: 202);
+
+            return $this->serviceResult(message: $th->getMessage());
+        }
+    }
 
     /**
      * Create or update status user

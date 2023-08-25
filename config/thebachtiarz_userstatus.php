@@ -22,9 +22,9 @@ return [
     |
     */
     'status_ability_pool' => [
-        'status-user' => ['create', 'update', 'delete'],
+        'status-user' => ['get', 'create', 'update', 'delete'],
         'user-status' => ['create', 'update'],
-        'auth-user' => ['create'],
+        'auth-user' => ['create', 'update'],
     ],
 
     /*
