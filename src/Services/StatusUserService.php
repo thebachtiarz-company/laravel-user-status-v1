@@ -190,7 +190,7 @@ class StatusUserService extends AbstractService
             assert($statusUser instanceof StatusUserInterface);
 
             $userStatusEntity = UserStatus::getByUser($user)->first();
-            assert($userStatusEntity instanceof UserStatusInterface);
+            assert($userStatusEntity instanceof UserStatusInterface || $userStatusEntity === null);
 
             if ($userStatusEntity) {
                 $userStatusEntity->setStatusUserId($statusUser->getId());

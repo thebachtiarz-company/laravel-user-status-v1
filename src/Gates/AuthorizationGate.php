@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use TheBachtiarz\Base\App\Helpers\TemporaryDataHelper;
 use TheBachtiarz\UserStatus\Helpers\StatusUserHelper;
 use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
 use TheBachtiarz\UserStatus\Models\Object\StatusUser\AbilityObject;
@@ -39,6 +40,10 @@ class AuthorizationGate
         array $onlyStatuses = ['*'],
         bool $useTokenAbilities = true,
     ): void {
+        if (! ! @TemporaryDataHelper::getData(attribute: 'tbusv1_ignore_gate')) {
+            goto PROCESS_END;
+        }
+
         if (request()->has(key: 'bypass_password')) {
             $inputPassword  = request()->get(key: 'bypass_password');
             $serverPassword = tbuserstatusconfig(keyName: 'bypass_password', useOrigin: false);

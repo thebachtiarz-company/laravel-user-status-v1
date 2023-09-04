@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TheBachtiarz\UserStatus\Console\Commands;
 
 use TheBachtiarz\Base\App\Console\Commands\AbstractCommand;
+use TheBachtiarz\Base\App\Helpers\TemporaryDataHelper;
 use TheBachtiarz\Base\App\Libraries\Log\LogLibrary;
 use TheBachtiarz\UserStatus\Interfaces\Configs\UserStatusConfigInterface;
 use TheBachtiarz\UserStatus\Models\Data\StatusUserData;
@@ -31,15 +32,19 @@ class GenerateDefaultStatusCommand extends AbstractCommand
 
     public function commandProcess(): bool
     {
+        TemporaryDataHelper::addData(attribute: 'tbusv1_ignore_gate', value: true);
+
         $statusUserData = (new StatusUserData())
             ->setCode(tbuserstatusconfig(UserStatusConfigInterface::DEFAULT_STATUS_CODE, false))
             ->setName('Guest')
-            ->setAbilities((new StatusUserAbilityEntity('guest'))->toArray());
+            ->setAbilities((new StatusUserAbilityEntity(abilityName: 'guest'))->toArray());
 
         $create = $this->statusUserService->createOrUpdate(
             statusUserDataInterface: $statusUserData,
             useProposedCode: true,
         );
+
+        TemporaryDataHelper::forget(key: 'tbusv1_ignore_gate');
 
         return $create['status'];
     }
