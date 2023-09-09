@@ -8,7 +8,6 @@ use TheBachtiarz\UserStatus\Console\Commands\GenerateDefaultStatusCommand;
 
 use function app;
 use function assert;
-use function collect;
 use function config;
 
 class AppsProvider
@@ -30,7 +29,7 @@ class AppsProvider
         assert($dataProvider instanceof DataProvider);
 
         foreach ($dataProvider->registerConfig() as $key => $register) {
-            config(collect($register)->unique()->toArray());
+            config($register);
         }
     }
 }

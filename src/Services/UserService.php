@@ -6,6 +6,7 @@ namespace TheBachtiarz\UserStatus\Services;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
+use TheBachtiarz\Auth\Helpers\AuthUserHelper;
 use TheBachtiarz\Auth\Repositories\AuthUserRepository;
 use TheBachtiarz\Auth\Repositories\PersonalAccessTokenRepository;
 use TheBachtiarz\Auth\Services\AuthUserService;
@@ -29,10 +30,12 @@ class UserService extends AuthUserService
         protected AuthUserRepository $authUserRepository,
         protected PersonalAccessTokenRepository $personalAccessTokenRepository,
         protected StatusUserService $statusUserService,
+        protected AuthUserHelper $authUserHelper,
     ) {
         parent::__construct(
             authUserRepository: $authUserRepository,
             personalAccessTokenRepository: $personalAccessTokenRepository,
+            authUserHelper: $authUserHelper,
         );
     }
 

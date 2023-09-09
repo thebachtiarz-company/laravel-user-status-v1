@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheBachtiarz\UserStatus\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use TheBachtiarz\Auth\Models\AbstractAuthUser;
 use TheBachtiarz\Auth\Repositories\AuthUserRepository;
 use TheBachtiarz\Base\App\Services\AbstractService;
@@ -50,20 +51,21 @@ class StatusUserService extends AbstractService
         try {
             $collect = collect();
 
-            $statusEntities = StatusUser::all();
+            /** @var Collection<StatusUserInterface> $entities */
+            $entities = StatusUser::all();
 
-            foreach ($statusEntities->all() as $key => $status) {
+            foreach ($entities->all() as $key => $status) {
                 assert($status instanceof StatusUserInterface);
                 $current = collect($status->simpleListMap());
 
                 if (! $withAbilities) {
-                    $current->only([
+                    $current = $current->only([
                         StatusUserInterface::ATTRIBUTE_NAME,
                         StatusUserInterface::ATTRIBUTE_CODE,
                     ]);
                 }
 
-                $collect->push($current->toArray());
+                $collect = $collect->push($current->toArray());
             }
 
             $result = $collect->toArray();
