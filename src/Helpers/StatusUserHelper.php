@@ -17,7 +17,7 @@ class StatusUserHelper
     /**
      * Generate new code
      */
-    public function generateNewCode(int $codeLength = 7): string
+    public function generateNewCode(int $codeLength = 12): string
     {
         $randomString = '';
 
