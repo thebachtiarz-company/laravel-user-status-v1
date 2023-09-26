@@ -6,6 +6,7 @@ namespace TheBachtiarz\UserStatus\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TheBachtiarz\Base\App\Models\AbstractModel;
+use TheBachtiarz\UserStatus\Interfaces\Models\StatusUserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Models\UserInterface;
 use TheBachtiarz\UserStatus\Interfaces\Models\UserStatusInterface;
 use TheBachtiarz\UserStatus\Traits\Models\UserStatusMapTrait;
@@ -74,7 +75,11 @@ class UserStatus extends AbstractModel implements UserStatusInterface
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, self::ATTRIBUTE_USERID);
+        return $this->belongsTo(
+            related: User::class,
+            foreignKey: self::ATTRIBUTE_USERID,
+            ownerKey: UserInterface::ATTRIBUTE_ID,
+        );
     }
 
     /**
@@ -85,7 +90,7 @@ class UserStatus extends AbstractModel implements UserStatusInterface
         return $this->belongsTo(
             related: StatusUser::class,
             foreignKey: self::ATTRIBUTE_STATUSUSERID,
-            ownerKey: UserInterface::ATTRIBUTE_ID,
+            ownerKey: StatusUserInterface::ATTRIBUTE_ID,
         );
     }
 }
